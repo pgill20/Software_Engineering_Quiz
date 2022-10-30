@@ -6,6 +6,7 @@ import sqlalchemy
 import pymysql
 import datetime
 import json
+from APIs import rankingsApi
 
 app = flask.Flask(__name__)
 
@@ -105,12 +106,10 @@ def login():
 def register():
     return render_template('register.html')
 
-
 @app.route('/create_quiz')
 def create_quiz():
     # This route will allow employers to create their quiz. 
     return render_template('create_quiz.html')
-
 
 @app.route('/submit_quiz', methods=["POST"])
 def submit_quiz():
@@ -144,6 +143,11 @@ def submit_quiz_answers():
     insertTestResults(fullName, email, score, testid, employer)
     return redirect(url_for('index'), code=302)
 
+@app.route('/rankings')
+def table():
+    headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
+    rankingData = rankingsApi.getRankingsByTestID("ID 255")
+    return render_template("table.html", headings=headings, data=rankingData)
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
