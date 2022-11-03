@@ -7,10 +7,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    db_connection = connect_to_database()
-    query = "SELECT participant_id, first_name, password FROM Participants;"
-    result = execute_query(db_connection, query).fetchall()
-    return render_template('index.html', rows=result)
+    # db_connection = connect_to_database()
+    # query = "SELECT participant_id, first_name, password FROM Participants;"
+    # result = execute_query(db_connection, query).fetchall()
+    return render_template('index.html')
+    # return render_template('index.html', rows=result)
 
 
 @app.route('/login')
