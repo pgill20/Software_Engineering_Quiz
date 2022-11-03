@@ -76,3 +76,4 @@ pg8000==1.29.2
 asyncpg==0.26.0
 python-tds==1.11.0
 aioresponses==0.7.3
+
