@@ -12,6 +12,14 @@
     <h1>Register Page</h1>
     <div><a href="{{url_for('login')}}">Already have an account? Log in</a></div>
     <div><a href="{{url_for('index')}}">Go back to homepage</a></div>
+
+    <h3>Add new participant:</h3>
+    <form id="addparticipant" action="/add_participant" method="post">
+        First Name: <input type="text" name="first_name"><br>
+        Last Name: <input type="text" name="last_name"><br>
+        Password: <input type="text" name="password"><br>
+        <input class="btn btn-outline-primary btn-sm" type="submit" value="Submit">
+    </form>
 </body>
 
 </html>
