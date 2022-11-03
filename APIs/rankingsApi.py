@@ -50,9 +50,6 @@ def insertTestResults(fullName, email, test, score, testId, employer):
         db_conn.execute(query)
     connector.close()
 
-data = getRankingsByTestID("ID 255")
-print(data)
-print(type(data))
 # insertTestResults("Troy ", "peelet@oregon.edu", "Test 1", 8, "ID 255", "Google")
 
 # CREATE TABLE rankings (FullName varchar(255), Email varchar(255), Test varchar(255), Score int, TestId varchar(255), Employer varchar(255), rankingID INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(rankingID));
