@@ -5,13 +5,12 @@ from db_connector import connect_to_database, execute_query
 app = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    # db_connection = connect_to_database()
-    # query = "SELECT participant_id, first_name, password FROM Participants;"
-    # result = execute_query(db_connection, query).fetchall()
-    return render_template('index.html')
-    # return render_template('index.html', rows=result)
+# @app.route('/')
+# def index():
+#     db_connection = connect_to_database()
+#     query = "SELECT participant_id, first_name, password FROM Participants;"
+#     result = execute_query(db_connection, query).fetchall()
+#     return render_template('index.html', rows=result)
 
 
 @app.route('/login')
@@ -33,6 +32,10 @@ def login():
 
     # elif request.method == 'GET':
     # Under Construction
+
+@app.route('/')
+def index():
+    return render_template('login.html')
 
 # @app.route('/rankings')
 # def table():
