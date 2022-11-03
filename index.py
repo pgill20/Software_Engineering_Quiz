@@ -36,7 +36,7 @@ def register():
 @app.route('/rankings')
 def table():
     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
-    # index = 3
+    index = 3
     # rankingData = rankingsApi.getRankingsByTestID("ID 255")
     rankingData = ["Troy ", "peelet@oregon.edu", "Test 1", "8", "ID 255", "Google"]
     rankingData.sort(key = lambda x: x[index])
