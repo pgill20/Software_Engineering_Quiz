@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-# from db_connector import connect_to_database, execute_query
+from db_connector import connect_to_database, execute_query
 # from APIs import rankingsApi
 
 app = Flask(__name__)
@@ -33,11 +33,11 @@ def register():
     # elif request.method == 'GET':
     # Under Construction
 
-@app.route('/rankings')
-def table():
-    headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
-    index = 3
-    # rankingData = rankingsApi.getRankingsByTestID("ID 255")
-    rankingData = ["Troy ", "peelet@oregon.edu", "Test 1", "8", "ID 255", "Google"]
-    rankingData.sort(key = lambda x: x[index])
-    return render_template("table.html", headings=headings, data=rankingData)
+# @app.route('/rankings')
+# def table():
+#     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
+#     index = 3
+#     # rankingData = rankingsApi.getRankingsByTestID("ID 255")
+#     rankingData = ["Troy ", "peelet@oregon.edu", "Test 1", "8", "ID 255", "Google"]
+#     rankingData.sort(key = lambda x: x[index])
+#     return render_template("table.html", headings=headings, data=rankingData)
