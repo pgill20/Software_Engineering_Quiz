@@ -1,14 +1,13 @@
-import flask
-from flask import render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for
 from google.cloud.sql.connector import Connector
-#from db_connector import connect_to_database, execute_query
 import sqlalchemy
 import pymysql
 import datetime
 import json
+from db_connector import connect_to_database, execute_query
 from APIs import rankingsApi
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 
 # initialize Connector object
 connector = Connector()
@@ -95,7 +94,10 @@ pool = sqlalchemy.create_engine(
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    db_connection = connect_to_database()
+    query = "SELECT participant_id, first_name, password FROM Participants;"
+    result = execute_query(db_connection, query).fetchall()
+    return render_template('index.html', rows=result)
 
 @app.route('/login')
 def login():
@@ -104,7 +106,15 @@ def login():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-    return render_template('register.html')
+    db_connection = connect_to_database()
+    if request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        password = request.form['password']
+        query = "INSERT INTO Participants (first_name, last_name, password) VALUES (%s, %s, %s);"
+        data = (first_name, last_name, password)
+        execute_query(db_connection, query, data)
+        return redirect('/index')
 
 @app.route('/create_quiz')
 def create_quiz():
@@ -146,7 +156,10 @@ def submit_quiz_answers():
 @app.route('/rankings')
 def table():
     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
-    rankingData = rankingsApi.getRankingsByTestID("ID 255")
+    # index = 3
+    # rankingData = rankingsApi.getRankingsByTestID("ID 255")
+    # rankingData.sort(key = lambda x: x[index])
+    rankingData = ["Troy ", "peelet@oregon.edu", "Test 1", 8, "ID 255", "Google"]
     return render_template("table.html", headings=headings, data=rankingData)
 
 if __name__ == '__main__':
