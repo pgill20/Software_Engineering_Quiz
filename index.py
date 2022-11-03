@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
-from db_connector import connect_to_database, execute_query
-from APIs import rankingsApi
+# from db_connector import connect_to_database, execute_query
+# from APIs import rankingsApi
 
 app = Flask(__name__)
 
@@ -38,6 +38,6 @@ def table():
     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
     # index = 3
     # rankingData = rankingsApi.getRankingsByTestID("ID 255")
-    # rankingData.sort(key = lambda x: x[index])
-    rankingData = ["Troy ", "peelet@oregon.edu", "Test 1", 8, "ID 255", "Google"]
+    rankingData = ["Troy ", "peelet@oregon.edu", "Test 1", "8", "ID 255", "Google"]
+    rankingData.sort(key = lambda x: x[index])
     return render_template("table.html", headings=headings, data=rankingData)
