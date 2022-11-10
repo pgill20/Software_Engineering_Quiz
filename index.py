@@ -3,6 +3,7 @@ from google.cloud.sql.connector import Connector
 import sqlalchemy
 import pymysql
 import datetime
+import json
 
 app = Flask(__name__)
 
@@ -44,7 +45,7 @@ def insertQuiz(send_quiz):
         insert_stmt = sqlalchemy.text(
         "INSERT INTO quizzes (username, Test, quizQuestions, Employer, time) values (:username, :Test, :quiz, :employer, :time)",
         )
-        db_conn.execute(insert_stmt, username="DanTest", Test="Test Test", quiz=send_quiz, employer="Dan's House of Quizzes", time=datetime.datetime)
+        db_conn.execute(insert_stmt, username="DanTest", Test="Test Test", quiz=send_quiz, employer="Dan's House of Quizzes", time=datetime.datetime())
     connector.close()
 
 def pullQuestions(arg_dict):
@@ -56,11 +57,13 @@ def pullQuestions(arg_dict):
     )
 
     with pool.connect() as db_conn:
-        insert_stmt = sqlalchemy.text(
+        select_stmt = sqlalchemy.text(
             "SELECT quizQuestions FROM quizzes WHERE username=:username"
         )
-        quiz = db_conn.execute(insert_stmt, username="DanTest")
-        return quiz
+        quiz = db_conn.execute(select_stmt, username="DanTest")
+
+        quiz = list(quiz)
+        return quiz[0][0]
 
 # create connection pool
 pool = sqlalchemy.create_engine(
@@ -99,8 +102,8 @@ def take_quiz():
     # This route is taken from an email link to a particular quiz
     if not request.args:
         return "You cannot access this page directly. Please access this page through an email link from your potential employer."
-    #quiz = pullQuestions(request.args)
-    quiz = ["Yes"]
+    quiz = pullQuestions(request.args)
+    #quiz = [["multipleChoice", "question", "A", "B", "C", "D"]]
     return render_template('take_quiz.html', q=quiz)
 
 

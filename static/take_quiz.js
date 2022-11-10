@@ -1,8 +1,7 @@
-// create_quiz.js
-// Created by Dan Glendon, October 17th 2022
-// This loads along with create_quiz.html and allows a user (employer) to create a quiz to be sent to potential candidates.
-// It is flexible, as it doesn't suggest questions and just allows input.
-// Please note, the style as of right now is temporary. It will be changed in the future.
+// take_quiz.js
+// Created by Dan Glendon, November 10th 2022
+// This loads along with take_quiz.html and allows a candidate to take a quiz sent by an employer.
+// It takes questions from the database (in Flask) which is transferred to the HTML and then to this file.
 
 // Websites used for solutions and inspiration in this file:
 // https://codepen.io/Kanecodes/pen/EeejJv
@@ -17,9 +16,10 @@ window.onload=function(){
 
     function loadQuestions() {
         questions_json = document.getElementById('questionsImport').innerHTML;
-        for (var i in questions_json) {
-            questions.push([i]);
-        }
+        quotes = questions_json.replaceAll("'",'"');
+        //toParse = quotes.slice(5,-1)
+        questions = JSON.parse(quotes)
+        return questions;
     }
 
     function dummy_loadQuestions() {
@@ -29,7 +29,7 @@ window.onload=function(){
         ["trueOrFalse", "Is this a quiz?"]]
     }
 
-    dummy_loadQuestions();
+    questions = loadQuestions();
 
     // Screen 3, where you type in the questions and answers you want
     var welcomeText = document.getElementById('welcomeText');
