@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from google.cloud.sql.connector import Connector
 import sqlalchemy
 import pymysql
+import datetime
 
 app = Flask(__name__)
 
@@ -11,11 +12,11 @@ connector = Connector()
 # function to return the database connection
 def getConnCreation() -> pymysql.connections.Connection:
     conn: pymysql.connections.Connection = connector.connect(
-        "boxwood-valve-365621:us-west1:quizstorage",
+        "capstone-367716:us-west1:capstone",
         "pymysql",
-        user="quizstorage",
-        password="password",
-        db="quizzes"
+        user="peelet",
+        password="467Ranking",
+        db="467captstone"
     )
 
     return conn
@@ -41,10 +42,25 @@ def insertQuiz(send_quiz):
 
     with pool.connect() as db_conn:
         insert_stmt = sqlalchemy.text(
-        "INSERT INTO quizzes (username, quiz) values (:username, :quiz)",
+        "INSERT INTO quizzes (username, Test, quizQuestions, Employer, time) values (:username, :Test, :quiz, :employer, :time)",
         )
-        db_conn.execute(insert_stmt, username="DanTest", quiz=send_quiz)
+        db_conn.execute(insert_stmt, username="DanTest", Test="Test Test", quiz=send_quiz, employer="Dan's House of Quizzes", time=datetime.datetime)
     connector.close()
+
+def pullQuestions(arg_dict):
+    username = arg_dict.get("username")
+    quiz_time = arg_dict.get("quiztime")
+    pool = sqlalchemy.create_engine(
+        "mysql+pymysql://",
+        creator=getConnCreation,
+    )
+
+    with pool.connect() as db_conn:
+        insert_stmt = sqlalchemy.text(
+            "SELECT quizQuestions FROM quizzes WHERE username=:username"
+        )
+        quiz = db_conn.execute(insert_stmt, username="DanTest")
+        return quiz
 
 # create connection pool
 pool = sqlalchemy.create_engine(
@@ -77,6 +93,15 @@ def submit_quiz():
     # This route is taken from create_quiz and allows created quizzes to be submitted to the database.
     insertQuiz(request.data)
     return redirect(url_for('index'), code=302)
+
+@app.route('/quiz')
+def take_quiz():
+    # This route is taken from an email link to a particular quiz
+    if not request.args:
+        return "You cannot access this page directly. Please access this page through an email link from your potential employer."
+    #quiz = pullQuestions(request.args)
+    quiz = ["Yes"]
+    return render_template('take_quiz.html', q=quiz)
 
 
 if __name__ == '__main__':

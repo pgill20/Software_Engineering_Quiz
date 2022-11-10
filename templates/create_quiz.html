@@ -10,7 +10,7 @@
 
 <body>
   <nav class="bar_box">
-    <div class="nav-wrapper teal lighten-2 class">
+    <div class="nav-wrapper blue lighten-2 class">
       <a href="{{ url_for('index') }}" class="brand-logo center">Quiz Creation</a>
     </div>
   </nav>
@@ -20,32 +20,34 @@
     <h3>Choose an Option:</h3>
     <div id="numberOfQuestions">Your quiz currently has 0 questions.</div>
     <div id="lastQuestion">You do not have a last submitted question for this session.</div>
-    <button id="createButton" class="waves-effect waves-light btn-small">Create Question</button>
-    <button id="submitButton" class="waves-effect waves-light btn-small">Submit Quiz</button>
+    <button id="createButton" class="waves-effect waves-light blue btn-small">Create Question</button>
+    <button id="submitButton" class="waves-effect waves-light blue btn-small">Submit Quiz</button>
   </div>
 
   <div class="container" id="container">
     <div class="row hide" id="chooseContainer">
       <h3>Choose a type of question:</h3>
-      <button id="multipleChoice" class="waves-effect waves-light btn-small">Multiple Choice</button>
-      <button id="shortAnswer" class="waves-effect waves-light btn-small">Short Answer</button>
-      <button id="checkAll" class="waves-effect waves-light btn-small">Check All That Apply</button>
-      <button id="trueOrFalse" class="waves-effect waves-light btn-small">True Or False</button>
-      <button id="backButton" class="waves-effect waves-light btn-small">Back</button>
+      <button id="multipleChoice" class="waves-effect waves-light blue btn-small">Multiple Choice</button>
+      <button id="shortAnswer" class="waves-effect waves-light blue btn-small">Short Answer</button>
+      <button id="checkAll" class="waves-effect waves-light blue btn-small">Check All That Apply</button>
+      <button id="trueOrFalse" class="waves-effect waves-light blue btn-small">True Or False</button>
+      <button id="backButton" class="waves-effect waves-light blue btn-small">Back</button>
     </div>
 
     <div class="row" id="questionContainer">
       <h5 class="hide" id="questionText">Question:</h5>
       <input class="hide" id="inputQuestion" placeholder="Question"></input>
-      <h5 class="hide" id="answerOneText">Answer One:</h5>
+      <h5 class="hide" id="answerOneText">Answer One (A):</h5>
       <input class="hide" id="inputOne" placeholder="Answer"></input>
-      <h5 class="hide" id="answerTwoText">Answer Two:</h5>
+      <h5 class="hide" id="answerTwoText">Answer Two (B):</h5>
       <input class="hide" id="inputTwo" placeholder="Answer"></input>
-      <h5 class="hide" id="answerThreeText">Answer Three:</h5>
+      <h5 class="hide" id="answerThreeText">Answer Three (C):</h5>
       <input class="hide" id="inputThree" placeholder="Answer"></input>
-      <h5 class="hide" id="answerFourText">Answer Four:</h5>
+      <h5 class="hide" id="answerFourText">Answer Four (D):</h5>
       <input class="hide" id="inputFour" placeholder="Answer"></input>
-      <button class="waves-effect waves-light btn-small hide" id="addButton">Submit Question</button>
+      <h5 class="hide" id="correctAnswerText">Correct Answer:</h5>
+      <input class="hide" id="inputAnswer" placeholder="A"></input>
+      <button class="waves-effect waves-light blue btn-small hide" id="addButton">Submit Question</button>
     </div>
 
     <div class="row" id="successContainer">

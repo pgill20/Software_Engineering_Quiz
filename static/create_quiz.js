@@ -36,11 +36,13 @@ var answerOne = document.getElementById('inputOne');
 var answerTwo = document.getElementById('inputTwo');
 var answerThree = document.getElementById('inputThree');
 var answerFour = document.getElementById('inputFour');
+var inputAnswer = document.getElementById('inputAnswer');
 var questionText = document.getElementById('questionText');
 var answerOneText = document.getElementById('answerOneText');
 var answerTwoText = document.getElementById('answerTwoText');
 var answerThreeText = document.getElementById('answerThreeText');
 var answerFourText = document.getElementById('answerFourText');
+var inputAnswerText = document.getElementById('correctAnswerText');
 var addButton = document.getElementById('addButton');
 
 // Screen 1 Buttons
@@ -105,8 +107,14 @@ if (addButton) {
         //TODO: If any fields are empty, don't continue
         if (1 == 2) {
             alert('Fields need to be filled before submission.');
+        } else if (inputAnswer.value != "A") {
+            if (inputAnswer.value != "B") {
+                if (inputAnswer.value != "C") {
+                    if (inputAnswer.value != "D") {
+                        alert('Please fill in an answer A, B, C, or D for correct answer.')
+            };
+        }}
         } else {
-            // TODO: Add "check all" status into the form somewhere
             addButton.disabled = true;
             switch (type) {
             case 'checkAll':
@@ -137,23 +145,35 @@ function switchToScreen() {
 }
 
 function createMultipleChoiceOrCheckAll() {
-    // There is a problem with writing to locations [0] of questions[position]
     questions[position] = []
-    questions[position][0] = inputQuestion.value
-    questions[position][1] = inputOne.value
+    questions[position][0] = type
+    questions[position][1] = inputQuestion.value
     questions[position][2] = inputOne.value
-    questions[position][3] = inputOne.value
-    questions[position][4] = inputOne.value
+    questions[position][3] = inputTwo.value
+    questions[position][4] = inputThree.value
+    questions[position][5] = inputFour.value
+    questions[position][6] = inputAnswer.value
 }
 
 function createShortAnswerOrTrueFalse() {
     questions[position] = []
-    questions[position][0] = inputQuestion.value;
+    questions[position][0] = type
+    questions[position][1] = inputQuestion.value;
 }
 
 function addQuestion() {
     position += 1;
-    lastQuestion.innerHTML = 'Your last submitted question was: ' + questions[position-1][0]
+    last_type = questions[position-1][0]
+    if (last_type == "multipleChoice") {
+        add = "Multiple Choice"
+    } else if (last_type == "shortAnswer") {
+        add = "Short Answer"
+    } else if (last_type == "checkAll") {
+        add = "Check All That Apply"
+    } else if (last_type == "trueOrFalse") {
+        add = "True or False"
+    }
+    lastQuestion.innerHTML = 'Your last submitted question was: ' + add
     if (position == 1) {
         numberOfQuestions.innerHTML = 'Your quiz currently has 1 question.' 
     } else {
@@ -179,6 +199,12 @@ var clearQuiz = () => {
     answerTwo.innerHTML = '', 
     answerThree.innerHTML = '', 
     answerFour.innerHTML = ''
+
+    var elements = document.getElementsByTagName("input");
+
+    for (var i = 0; i < elements.length; i++) {
+            elements[i].value = ''
+    }
 }
 
 var hideConfiguration = () => {
@@ -200,6 +226,8 @@ var hideQuestionFill = () => {
     answerTwoText.classList.add('hide');
     answerThreeText.classList.add('hide');
     answerFourText.classList.add('hide');
+    inputAnswerText.classList.add('hide');
+    inputAnswer.classList.add('hide');
     addButton.classList.add('hide');
 }
 
@@ -222,6 +250,8 @@ var unhideMultipleChoiceOrCheckAll = () => {
     answerTwoText.classList.remove('hide');
     answerThreeText.classList.remove('hide');
     answerFourText.classList.remove('hide');
+    inputAnswerText.classList.remove('hide');
+    inputAnswer.classList.remove('hide');
     addButton.classList.remove('hide');
 }
 
