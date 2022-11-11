@@ -92,13 +92,6 @@ pool = sqlalchemy.create_engine(
 #     result = execute_query(db_connection, query).fetchall()
 #     return render_template('index.html', rows=result)
 
-# @app.route('/')
-# def index():
-#     db_connection = connect_to_database()
-#     query = "SELECT participant_id, first_name, password FROM Participants;"
-#     result = execute_query(db_connection, query).fetchall()
-#     return render_template('index.html', rows=result)
-
 @app.route('/login')
 def login():
     return render_template('login.html')
@@ -154,7 +147,7 @@ def submit_quiz_answers():
     insertTestResults(fullName, email, score, testid, employer)
     return redirect(url_for('index'), code=302)
 
-@app.route('/rankings')
+@app.route('/')
 def table():
     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
     index = 3
