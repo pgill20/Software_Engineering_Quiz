@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, url_for
 from google.cloud.sql.connector import Connector
 import sqlalchemy
@@ -87,18 +88,17 @@ pool = sqlalchemy.create_engine(
 
 # @app.route('/')
 # def index():
-#     db_connection = connect_to_database()
-#     query = "SELECT participant_id, first_name, password FROM Participants;"
-#     result = execute_query(db_connection, query).fetchall()
-#     return render_template('index.html', rows=result)
+# #     db_connection = connect_to_database()
+# #     query = "SELECT participant_id, first_name, password FROM Participants;"
+# #     result = execute_query(db_connection, query).fetchall()
+#     return render_template('index.html')
 
-# @app.route('/login')
+# @app.route('/')
 # def login():
 #     return render_template('login.html')
 
 
 # @app.route('/register', methods=['POST', 'GET'])
-# def register():
     # db_connection = connect_to_database()
     # if request.method == 'POST':
     #     first_name = request.form['first_name']
@@ -186,4 +186,3 @@ if __name__ == '__main__':
 
     # elif request.method == 'GET':
     # Under Construction
-
