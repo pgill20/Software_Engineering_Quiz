@@ -30,17 +30,12 @@ def register():
     #     execute_query(db_connection, query, data)
     #     return redirect('/index')
     return render_template('register.html')
-=======
 #     return render_template('index.html', rows=result)
 
 
 # @app.route('/login')
 # def login():
 #     return render_template('login.html')
-
-@app.route('/')
-def index():
-    return 'Web App with Python Flask!'
 
 
 # @app.route('/register', methods=['POST', 'GET'])
