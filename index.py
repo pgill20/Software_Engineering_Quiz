@@ -35,6 +35,9 @@ app = Flask(__name__)
 #     # elif request.method == 'GET':
 #     # Under Construction
 
+@app.route('/')
+def home():
+    return "homepage for the Engineer"
 
 @app.route('/rankings')
 def table():
@@ -49,5 +52,5 @@ def table():
     rankingData.sort(key = lambda x: x[index], reverse=True)
     return render_template("table.html", headings=headings, data=rankingData)
 
-    
+
 # app.run(host='0.0.0.0', port=81)
