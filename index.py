@@ -5,12 +5,12 @@ from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    db_connection = connect_to_database()
-    query = "SELECT participant_id, first_name, password FROM Participants;"
-    result = execute_query(db_connection, query).fetchall()
-    return render_template('index.html')
+# @app.route('/')
+# def index():
+#     db_connection = connect_to_database()
+#     query = "SELECT participant_id, first_name, password FROM Participants;"
+#     result = execute_query(db_connection, query).fetchall()
+#     return render_template('index.html')
 
 @app.route('/login')
 def login():
@@ -34,7 +34,7 @@ def register():
     # Under Construction
 
 
-@app.route('/rankings')
+@app.route('/')
 def table():
     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
     index = 3
