@@ -145,6 +145,11 @@ def submit_quiz_answers():
     insertTestResults(fullName, email, score, testid, employer)
     return redirect(url_for('index'), code=302)
 
+@app.route('/')
+def home():
+    return "homepage for the Engineer"
+
+
 @app.route('/rankings')
 def table():
     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
