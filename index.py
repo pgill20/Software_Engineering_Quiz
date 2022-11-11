@@ -36,19 +36,19 @@ app = Flask(__name__)
 #     # Under Construction
 
 @app.route('/')
-def home():
+def index():
     return "homepage for the Engineer"
 
 @app.route('/rankings')
 def table():
     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
     index = 3
-    rankingData = rankingsApi.getRankingsByTestID("ID 255")
-    # rankingData = [
-    # ('Troy Peele', 'peelet@oregonstate.edu', 'Test 1', 10, 'ID 255', 'Google', 1),
-    # ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 11, 'ID 255', 'Google', 2),
-    # ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 1, 'ID 255', 'Google', 3), ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 8, 'ID 255', 'Google', 4)
-    # ]
+    # rankingData = rankingsApi.getRankingsByTestID("ID 255")
+    rankingData = [
+    ('Troy Peele', 'peelet@oregonstate.edu', 'Test 1', 10, 'ID 255', 'Google', 1),
+    ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 11, 'ID 255', 'Google', 2),
+    ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 1, 'ID 255', 'Google', 3), ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 8, 'ID 255', 'Google', 4)
+    ]
     rankingData.sort(key = lambda x: x[index], reverse=True)
     return render_template("table.html", headings=headings, data=rankingData)
 
