@@ -16,6 +16,10 @@ app = Flask(__name__)
 # def login():
 #     return render_template('login.html')
 
+@app.route('/')
+def index():
+    return 'Web App with Python Flask!'
+
 
 # @app.route('/register', methods=['POST', 'GET'])
 # def register():
