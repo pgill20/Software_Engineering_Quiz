@@ -13,13 +13,13 @@ app = Flask(__name__)
 
 #     return render_template('index.html')
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
+# @app.route('/login')
+# def login():
+#     return render_template('login.html')
 
 
-@app.route('/register', methods=['POST', 'GET'])
-def register():
+# @app.route('/register', methods=['POST', 'GET'])
+# def register():
     # db_connection = connect_to_database()
     # if request.method == 'POST':
     #     first_name = request.form['first_name']
@@ -29,7 +29,7 @@ def register():
     #     data = (first_name, last_name, password)
     #     execute_query(db_connection, query, data)
     #     return redirect('/index')
-    return render_template('register.html')
+    # return render_template('register.html')
 #     return render_template('index.html', rows=result)
 
 
@@ -55,7 +55,7 @@ def register():
 
 
 @app.route('/')
-def table():
+def index():
     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
     index = 3
     # rankingData = rankingsApi.getRankingsByTestID("ID 255")
