@@ -92,13 +92,13 @@ pool = sqlalchemy.create_engine(
 #     result = execute_query(db_connection, query).fetchall()
 #     return render_template('index.html', rows=result)
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
+# @app.route('/login')
+# def login():
+#     return render_template('login.html')
 
 
-@app.route('/register', methods=['POST', 'GET'])
-def register():
+# @app.route('/register', methods=['POST', 'GET'])
+# def register():
     # db_connection = connect_to_database()
     # if request.method == 'POST':
     #     first_name = request.form['first_name']
@@ -108,7 +108,6 @@ def register():
     #     data = (first_name, last_name, password)
     #     execute_query(db_connection, query, data)
     #     return redirect('/index')
-    return render_template('register.html')
 
 @app.route('/create_quiz')
 def create_quiz():
