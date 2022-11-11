@@ -145,13 +145,17 @@ def submit_quiz_answers():
     insertTestResults(fullName, email, score, testid, employer)
     return redirect(url_for('index'), code=302)
 
-@app.route('/')
+@app.route('/rankings')
 def table():
     headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
     index = 3
-    # rankingData = rankingsApi.getRankingsByTestID("ID 255")
-    rankingData = ["Troy ", "peelet@oregon.edu", "Test 1", "8", "ID 255", "Google"]
-    rankingData.sort(key = lambda x: x[index])
+    rankingData = rankingsApi.getRankingsByTestID("ID 255")
+    # rankingData = [
+    # ('Troy Peele', 'peelet@oregonstate.edu', 'Test 1', 10, 'ID 255', 'Google', 1),
+    # ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 11, 'ID 255', 'Google', 2),
+    # ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 1, 'ID 255', 'Google', 3), ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 8, 'ID 255', 'Google', 4)
+    # ]
+    rankingData.sort(key = lambda x: x[index], reverse=True)
     return render_template("table.html", headings=headings, data=rankingData)
 
 if __name__ == '__main__':
@@ -185,3 +189,16 @@ if __name__ == '__main__':
 
     # elif request.method == 'GET':
     # Under Construction
+
+@app.route('/rankings')
+def table():
+    headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
+    index = 3
+    rankingData = rankingsApi.getRankingsByTestID("ID 255")
+    # rankingData = [
+    # ('Troy Peele', 'peelet@oregonstate.edu', 'Test 1', 10, 'ID 255', 'Google', 1),
+    # ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 11, 'ID 255', 'Google', 2),
+    # ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 1, 'ID 255', 'Google', 3), ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 8, 'ID 255', 'Google', 4)
+    # ]
+    rankingData.sort(key = lambda x: x[index], reverse=True)
+    return render_template("table.html", headings=headings, data=rankingData)
