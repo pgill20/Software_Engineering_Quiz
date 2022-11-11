@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, url_for
 from google.cloud.sql.connector import Connector
 import sqlalchemy
