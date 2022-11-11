@@ -48,4 +48,6 @@ def table():
     # ]
     rankingData.sort(key = lambda x: x[index], reverse=True)
     return render_template("table.html", headings=headings, data=rankingData)
-app.run(host='0.0.0.0', port=81)
+
+    
+# app.run(host='0.0.0.0', port=81)
