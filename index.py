@@ -1,6 +1,8 @@
+
 from flask import Flask, render_template, request, redirect
 # from db_connector import connect_to_database, execute_query
 from APIs import rankingsApi
+
 
 app = Flask(__name__)
 
