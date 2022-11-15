@@ -102,8 +102,8 @@ def take_quiz():
     # This route is taken from an email link to a particular quiz
     if not request.args:
         return "You cannot access this page directly. Please access this page through an email link from your potential employer."
-    quiz = pullQuestions(request.args)
-    #quiz = [["multipleChoice", "question", "A", "B", "C", "D"]]
+    #quiz = pullQuestions(request.args)
+    quiz = [["multipleChoice", "question", "A", "B", "C", "D"]]
     return render_template('take_quiz.html', q=quiz)
 
 

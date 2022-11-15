@@ -27,9 +27,10 @@ window.onload=function(){
         ["shortAnswer", "Please type something."],
         ["checkAll", "How many numbers are one digit?", "12", "6", "3", "43"],
         ["trueOrFalse", "Is this a quiz?"]]
+        return questions
     }
 
-    questions = loadQuestions();
+    questions = dummy_loadQuestions();
 
     // Screen 3, where you type in the questions and answers you want
     var welcomeText = document.getElementById('welcomeText');
