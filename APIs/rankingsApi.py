@@ -29,7 +29,8 @@ def getRankingsByTestID(testId):
 
     with pool.connect() as db_conn:
         result = db_conn.execute(query).fetchall()
- 
+        print(result)
+        return result
     connector.close()
 
 def insertTestResults(fullName, email, test, score, testId, employer):
@@ -43,33 +44,33 @@ def insertTestResults(fullName, email, test, score, testId, employer):
     query = base_query.format(FullName=fullName, Email=email, Test=test, Score=score, TestId=testId, Employer=employer)
     
     with pool.connect() as db_conn:
-        insert_stmt = sqlalchemy.text(
-        "INSERT INTO entries (guestName, content) values (:guestName, :content)",
-        )
         db_conn.execute(query)
     connector.close()
 
-# insertTestResults("Troy ", "peelet@oregon.edu", "Test 1", 8, "ID 255", "Google")
+def createQuiz(username, test, quizQuestions, employer, time):
+    pool = sqlalchemy.create_engine(
+        "mysql+pymysql://",
+        creator=getconn,
+    )
+    base_query = """
+    INSERT INTO quizzes (username , Test , quizQuestions, Employer, time) values ('{Username}' , '{Test}' , '{QuizQuestions}' , '{Employer}' , '{Time}')
+    """
+    query = base_query.format(Username=username, Test=test, QuizQuestions=quizQuestions, Employer=employer, Time=time)
+    
+    with pool.connect() as db_conn:
+        db_conn.execute(query)
+    connector.close()
+
+# createQuiz('john daly', 'swe new grad', '[(1,b), (2,c)]', 'Google', '7:45am')
 
 
-# INSERT INTO rankings (FullName , Email , Test , Score , TestId , Employer) values ("Troy Peele", "peelet@oregonstate.edu", "Test 1", 10, "ID 255", "Google");
+# insertTestResults("John ", "john@oregon.edu", "Test 1", 36, "ID 255", "Google")
 # getRankingsByTestID('ID 255')
 
-# def testQuery():
+# createQuiz('john daly', 'swe new grad', '[(1,b), (2,c)]', 'Google', '7:45am')
 
-#     pool = sqlalchemy.create_engine(
-#         "mysql+pymysql://",
-#         creator=getconn,
-#     )
-#     base_query = """
-#     SELECT * FROM quizzes
-#     """
-#     query = base_query
 
-#     with pool.connect() as db_conn:
-#         result = db_conn.execute(query).fetchall()
-#         print(result)
-#         # return result
- 
-#     connector.close()
-# testQuery()
+# INSERT INTO rankings (FullName , Email , Test , Score , TestId , Employer) values ("Troy Peele 2", "peelet@oregonstate.edu", "Test 1", 11, "ID 255", "Google");
+# getRankingsByTestID('ID 255')
+
+# CREATE TABLE quizzes (username varchar(255), Test varchar(255), quizQuestions varchar(800), Employer varchar(255), time varchar(255), testID INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(testId));
