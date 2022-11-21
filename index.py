@@ -1,11 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+import flask
+from flask import render_template, request, redirect, url_for
 from google.cloud.sql.connector import Connector
+#from db_connector import connect_to_database, execute_query
 import sqlalchemy
 import pymysql
 import datetime
 import json
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 # initialize Connector object
 connector = Connector()
@@ -49,8 +51,7 @@ def insertQuiz(send_quiz):
     connector.close()
 
 def pullQuestions(arg_dict):
-    username = arg_dict.get("username")
-    quiz_time = arg_dict.get("quiztime")
+    testid = arg_dict.get("testid")
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
         creator=getConnCreation,
@@ -58,18 +59,39 @@ def pullQuestions(arg_dict):
 
     with pool.connect() as db_conn:
         select_stmt = sqlalchemy.text(
-            "SELECT quizQuestions FROM quizzes WHERE username=:username"
+            "SELECT quizQuestions, Employer FROM quizzes WHERE testid=:id"
         )
-        quiz = db_conn.execute(select_stmt, username="DanTest")
+        quiz = db_conn.execute(select_stmt, id=testid)
 
         quiz = list(quiz)
-        return quiz[0][0]
+        return quiz
+
+def insertTestResults(fullName, email, score, testId, employer):
+    pool = sqlalchemy.create_engine(
+        "mysql+pymysql://",
+        creator=getConnCreation,
+    )
+    base_query = """
+    INSERT INTO rankings (FullName , Email , Score , TestId , Employer) values ('{FullName}' , '{Email}' , '{Score}' , '{TestId}' , '{Employer}')
+    """
+    query = base_query.format(FullName=fullName, Email=email, Score=score, TestId=testId, Employer=employer)
+   
+    with pool.connect() as db_conn:
+        db_conn.execute(query)
+    connector.close()
 
 # create connection pool
 pool = sqlalchemy.create_engine(
     "mysql+pymysql://",
     creator=getConnCreation,
 )
+
+# @app.route('/')
+# def index():
+#     db_connection = connect_to_database()
+#     query = "SELECT participant_id, first_name, password FROM Participants;"
+#     result = execute_query(db_connection, query).fetchall()
+#     return render_template('index.html', rows=result)
 
 @app.route('/')
 def index():
@@ -80,7 +102,7 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/register')
+@app.route('/register', methods=['POST', 'GET'])
 def register():
     return render_template('register.html')
 
@@ -102,9 +124,26 @@ def take_quiz():
     # This route is taken from an email link to a particular quiz
     if not request.args:
         return "You cannot access this page directly. Please access this page through an email link from your potential employer."
-    quiz = pullQuestions(request.args)
-    #quiz = [["multipleChoice", "question", "A", "B", "C", "D"]]
-    return render_template('take_quiz.html', q=quiz)
+    #group = pullQuestions(request.args)
+    #quiz = group[0][0]
+    #employer = group[0][1]
+    testid = request.args.get('testid')
+    quiz = [["multipleChoice", "question", "A", "B", "C", "D"]]
+    employer = "Dan"
+    return render_template('take_quiz.html', q=quiz, t=testid, e=employer)
+
+@app.route('/submit_quiz_answers', methods=["POST"])
+def submit_quiz_answers():
+    # This route is taken from take_quiz and allows quiz scores and data to be submitted to the rankings database.
+    data = json.loads(request.data)
+    print(data)
+    fullName = data["fullName"]
+    email = data["email"]
+    score = data["score"]
+    testid = data["testid"]
+    employer = data["employer"]
+    insertTestResults(fullName, email, score, testid, employer)
+    return redirect(url_for('index'), code=302)
 
 
 if __name__ == '__main__':
@@ -116,3 +155,35 @@ if __name__ == '__main__':
     # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
     # App Engine itself will serve those files as configured in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)
+    #db_connection = connect_to_database()
+    #if request.method == 'POST':
+    #    first_name = request.form['first_name']
+    #    last_name = request.form['last_name']
+    #    password = request.form['password']
+    #    query = "INSERT INTO Participants (first_name, last_name, password) VALUES (%s, %s, %s);"
+    #    data = (first_name, last_name, password)
+    #    execute_query(db_connection, query, data)
+    #    return redirect('/index')
+
+
+# @app.route('/login')
+# def login():
+#     return render_template('login.html')
+
+
+# @app.route('/register', methods=['POST', 'GET'])
+# def register():
+#     db_connection = connect_to_database()
+#     if request.method == 'POST':
+#         first_name = request.form['first_name']
+#         last_name = request.form['last_name']
+#         password = request.form['password']
+#         query = "INSERT INTO Participants (first_name, last_name, password) VALUES (%s, %s, %s);"
+#         data = (first_name, last_name, password)
+#         execute_query(db_connection, query, data)
+#         return redirect('/index')
+
+
+    # elif request.method == 'GET':
+    # Under Construction
+

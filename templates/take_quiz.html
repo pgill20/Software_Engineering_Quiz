@@ -17,18 +17,43 @@
 
 <div class="row hide" id="questionsImport">
     {{q}}
-</div> 
-    <div class="welcome" id="Welcome Container">
+</div>
+<div class="row hide" id="testidImport">
+    {{t}}
+</div>
+<div class="row hide" id="employerImport">
+    {{e}}
+</div>
+    <div id="welcomeContainer">
       <h4 id="welcomeText">Welcome!</h4>
+      <h5 id="welcomeText2">Please enter your full name and E-Mail to continue.</h5>
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s2 offset-s4">
+              <input placeholder="John Doe" id="inputName" type="text" class="validate">
+              <label class="active" for="inputName" id="inputNameLabel">Full Name</label>
+            </div>
+            <div class="input-field col s2">
+              <input placeholder="johndoe@email.com" id="inputEmail" type="email" class="validate">
+              <label class="active" for="inputEmail" id="inputEmailLabel">Email</label>
+            </div>
+          </div>
       <button class="waves-effect waves-light red btn-small" id="takeButton">Take Quiz!</button>
+    </div>
     </div>
 
     <div class="row hide" id="questionContainer">
       <h5 id="questionText">Question:</h5>
       <h4 id="inputQuestion">Question Goes Here</h4>
     </div>
-
-    <input class="hide" id="inputShort" placeholder="Answer"></input>
+    <div class="row">
+      <form class="col s12">
+        <div class="input-field col s4 offset-s4">
+          <input class="hide validate" type="text" id="inputShort" placeholder="Answer"></input>
+        </div>
+      </form>
+    </div>
 
     <div class="row hide" id="MultipleChoiceContainer">
       <p>
