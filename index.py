@@ -160,6 +160,7 @@ def table():
     rankingData.sort(key = lambda x: x[index], reverse=True)
     return render_template("table.html", headings=headings, data=rankingData)
 
+
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
     # Engine, a webserver process such as Gunicorn will serve the app. This
@@ -169,7 +170,6 @@ if __name__ == '__main__':
     # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
     # App Engine itself will serve those files as configured in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)
-
 
 # @app.route('/login')
 # def login():
