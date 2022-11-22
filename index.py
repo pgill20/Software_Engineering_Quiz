@@ -4,7 +4,7 @@ import sqlalchemy
 import pymysql
 import datetime
 import json
-from db_connector import connect_to_database, execute_query
+# from db_connector import connect_to_database, execute_query
 from APIs import rankingsApi
 
 app = Flask(__name__)
