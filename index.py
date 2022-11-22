@@ -13,21 +13,20 @@ app = flask.Flask(__name__)
 connector = Connector()
 
 # function to return the database connection
-def getConnCreation() -> pymysql.connections.Connection:
+def getconn() -> pymysql.connections.Connection:
     conn: pymysql.connections.Connection = connector.connect(
-        "capstone-367716:us-west1:capstone",
+        "test-capstone-project:us-west1:capstone-final",
         "pymysql",
-        user="peelet",
+        user="teamTriforce",
         password="467Ranking",
-        db="467captstone"
+        db="capstone"
     )
-
     return conn
 
 def getQuiz():
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
-        creator=getConnCreation,
+        creator=getconn,
     )
 
     with pool.connect() as db_conn:
@@ -40,7 +39,7 @@ def getQuiz():
 def insertQuiz(send_quiz):
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
-        creator=getConnCreation,
+        creator=getconn,
     )
 
     with pool.connect() as db_conn:
@@ -54,7 +53,7 @@ def pullQuestions(arg_dict):
     testid = arg_dict.get("testid")
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
-        creator=getConnCreation,
+        creator=getconn,
     )
 
     with pool.connect() as db_conn:
@@ -69,7 +68,7 @@ def pullQuestions(arg_dict):
 def insertTestResults(fullName, email, score, testId, employer):
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
-        creator=getConnCreation,
+        creator=getconn,
     )
     base_query = """
     INSERT INTO rankings (FullName , Email , Score , TestId , Employer) values ('{FullName}' , '{Email}' , '{Score}' , '{TestId}' , '{Employer}')
@@ -83,7 +82,7 @@ def insertTestResults(fullName, email, score, testId, employer):
 # create connection pool
 pool = sqlalchemy.create_engine(
     "mysql+pymysql://",
-    creator=getConnCreation,
+    creator=getconn,
 )
 
 # @app.route('/')
@@ -155,15 +154,6 @@ if __name__ == '__main__':
     # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
     # App Engine itself will serve those files as configured in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)
-    #db_connection = connect_to_database()
-    #if request.method == 'POST':
-    #    first_name = request.form['first_name']
-    #    last_name = request.form['last_name']
-    #    password = request.form['password']
-    #    query = "INSERT INTO Participants (first_name, last_name, password) VALUES (%s, %s, %s);"
-    #    data = (first_name, last_name, password)
-    #    execute_query(db_connection, query, data)
-    #    return redirect('/index')
 
 
 # @app.route('/login')
