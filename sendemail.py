@@ -1,15 +1,16 @@
-SENDGRID_API = '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'
+# API KEY MUST STAY PRIVATE, IF POSTED ONLINE OR IN A CHAT, EMAIL WILL BE DISABLED
+SENDGRID_API = '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' 
 
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-def sendEmail(email):
+def sendEmail(email, subjectInfo, testLink):
     message = Mail(
         from_email="peelet@oregonstate.edu",
         to_emails=email,
-        subject='Sending with Twilio SendGrid is Fun',
-        html_content='<strong>and easy to do anywhere, even with Python</strong>')
+        subject=subjectInfo,
+        html_content='<strong> You have been invited to take a timed test. Please use this link to start ' + testLink + ' </strong>')
     try:
-        sg = SendGridAPIClient('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')
+        sg = SendGridAPIClient(SENDGRID_API)
         response = sg.send(message)
         print(response.status_code)
         print(response.body)
@@ -17,18 +18,5 @@ def sendEmail(email):
     except Exception as e:
         print(e.message)
 
-# def sendEmail(email):
-#     sg = sendgrid.SendGridAPIClient(api_key='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')
-#     from_email = Email("peelet@oregonstate.edu")
-#     to_email = To("peelet@oregonstate.edu")
-#     subject = "Sending with SendGrid is Fun"
-#     content = Content("text/plain", "and easy to do anywhere, even with Python")
-#     mail = Mail(from_email, to_email, subject, content)
-#     response = sg.client.mail.send.post(request_body=mail.get())
-#     print(response.status_code)
-#     print(response.body)
-#     print(response.headers)
-
-
-# sendEmail('peelet@oregonstate.edu')
-# sendEmail('ltcharger@yahoo.com')
+# example of utilizing function below
+# sendEmail('ltcharger@yahoo.com','Invite to test', 'google.com')
