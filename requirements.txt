@@ -75,7 +75,4 @@ PyMySQL==1.0.2
 pg8000==1.29.2
 asyncpg==0.26.0
 python-tds==1.11.0
-# aioresponses==0.7.3
-# ConfigParser==3.11.0
-# configparser==5.3.0 
 sendgrid==2.2.0
