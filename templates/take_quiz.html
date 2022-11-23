@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Quiz - Software Quiz</title>
+    <script src="{{ url_for('static', filename='take_quiz.js') }}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+  </head>
+
+<body>
+  <nav class="bar_box">
+    <div class="nav-wrapper red lighten-2 class">
+      <a href="{{ url_for('index') }}" class="brand-logo center">Quiz</a>
+    </div>
+  </nav>
+
+<div class="row hide" id="questionsImport">
+    {{q}}
+</div>
+<div class="row hide" id="testidImport">
+    {{t}}
+</div>
+<div class="row hide" id="employerImport">
+    {{e}}
+</div>
+    <div id="welcomeContainer">
+      <h4 id="welcomeText">Welcome!</h4>
+      <h5 id="welcomeText2">Please enter your full name and E-Mail to continue.</h5>
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s2 offset-s4">
+              <input placeholder="John Doe" id="inputName" type="text" class="validate">
+              <label class="active" for="inputName" id="inputNameLabel">Full Name</label>
+            </div>
+            <div class="input-field col s2">
+              <input placeholder="johndoe@email.com" id="inputEmail" type="email" class="validate">
+              <label class="active" for="inputEmail" id="inputEmailLabel">Email</label>
+            </div>
+          </div>
+      <button class="waves-effect waves-light red btn-small" id="takeButton">Take Quiz!</button>
+    </div>
+    </div>
+
+    <div class="row hide" id="questionContainer">
+      <h5 id="questionText">Question:</h5>
+      <h4 id="inputQuestion">Question Goes Here</h4>
+    </div>
+    <div class="row">
+      <form class="col s12">
+        <div class="input-field col s4 offset-s4">
+          <input class="hide validate" type="text" id="inputShort" placeholder="Answer"></input>
+        </div>
+      </form>
+    </div>
+
+    <div class="row hide" id="MultipleChoiceContainer">
+      <p>
+        <label>
+          <input name="group1" type="radio" value="A" id="inputOne"/>
+          <span id="inputOneLabel">Placeholder</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input name="group1" type="radio" value="B" id="inputTwo"/>
+          <span id="inputTwoLabel">Placeholder</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input name="group1" type="radio" value="C" id="inputThree"/>
+          <span id="inputThreeLabel">Placeholder</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input name="group1" type="radio" value="D" id="inputFour"/>
+          <span id="inputFourLabel">Placeholder</span>
+        </label>
+      </p>
+      </div>
+
+    <div class="row hide" id="TrueFalseContainer">
+      <p>
+        <label>
+          <input type="radio" value="A" id="inputTrue"/>
+          <span id="inputTrueLabel">True</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input type="radio" value="B" id="inputFalse"/>
+          <span id="inputFalseLabel">False</span>
+        </label>
+      </p>
+      </div>
+
+    <form action="#">
+    <div class="row hide" id="CheckAllContainer">
+      <p>
+        <label>
+          <input type="checkbox" value="A" id="inputOneCA"/>
+          <span id="inputOneCALabel">Placeholder</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input type="checkbox" value="B" id="inputTwoCA"/>
+          <span id="inputTwoCALabel">Placeholder</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input type="checkbox" value="C" id="inputThreeCA"/>
+          <span id="inputThreeCALabel">Placeholder</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <input type="checkbox" value="D" id="inputFourCA"/>
+          <span id="inputFourCALabel">Placeholder</span>
+        </label>
+      </p>
+      </div>
+    </div>
+  </form>
+
+      <button class="waves-effect waves-light btn-small hide red" id="addButton">Submit Answer</button>
+    </div>
+
+    <div class="row" id="successContainer">
+      <h3 class="hide" id="successText">Quiz Completed.</h3>
+      <h4 class="hide" id="scoreText">Your score was: Error!</h5>
+      <h5 class="hide" id="disclaimer">Please note that only multiple choice questions are graded at this time.</h5>
+    </div>
+  </div>
+</body>
+
+</html>
