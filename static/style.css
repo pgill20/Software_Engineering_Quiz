@@ -18,3 +18,7 @@ body {
     font-family: "helvetica", sans-serif;
     text-align: center;
 }
+
+.navbar-fixed {
+    text-size-adjust: 24;
+}

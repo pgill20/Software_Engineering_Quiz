@@ -16,7 +16,7 @@ window.onload=function(){
 // Screen 1, where you click "Create Question" or submit the finished quiz
 var configContainer = document.getElementById('configContainer');
 var createButton = document.getElementById('createButton');
-var submitButton = document.getElementById('submitButton');
+var nextButton = document.getElementById('nextButton');
 var numberOfQuestions = document.getElementById('numberOfQuestions');
 var questions = [["0", "0", "0", "0", "0"] * 100];
 var position = 0;
@@ -45,6 +45,14 @@ var answerFourText = document.getElementById('answerFourText');
 var inputAnswerText = document.getElementById('correctAnswerText');
 var addButton = document.getElementById('addButton');
 
+// Screen 4, where you put in the name of the test and employer
+var inputTestName = document.getElementById('inputTestName')
+var inputEmployer = document.getElementById('inputEmployer')
+var submitButton = document.getElementById('submitButton')
+var nameEmployerContainer = document.getElementById('nameEmployerContainer')
+var testName = ""
+var employer = ""
+
 // Screen 1 Buttons
 if (createButton) {
 createButton.addEventListener('click', () => {
@@ -56,16 +64,31 @@ createButton.addEventListener('click', () => {
     }
 })}
 
-if (submitButton) {
-submitButton.addEventListener('click', () => {
-    if (position == 0) {
-        alert('Your quiz has zero questions. Please add some.');
-    } else {
-        hideConfiguration();
-        showSuccess();
-        submitQuiz();
-    }
+if (nextButton) {
+    nextButton.addEventListener('click', () => {
+        if (position == 0) {
+            alert('Your quiz has zero questions. Please add some.');
+        } else {
+            hideConfiguration();
+            unhideInputNames();
+        }
 })}
+
+if (submitButton) {
+    submitButton.addEventListener('click', () => {
+        if (inputTestName.value == "Test Name") {
+            alert('Please enter a test name.');
+        } else if (inputTestName.value == "Employer") {
+            alert('Please enter an employer name.');
+        } else {
+            testName = inputTestName.value
+            employer = inputEmployer.value
+            hideInputNames();
+            showSuccess();
+            submitQuiz();
+        }
+    })}
+
 
 // Screen 2 Type Buttons
 multipleChoice.addEventListener('click', () => {
@@ -107,13 +130,14 @@ if (addButton) {
         //TODO: If any fields are empty, don't continue
         if (1 == 2) {
             alert('Fields need to be filled before submission.');
-        } else if (inputAnswer.value != "A") {
-            if (inputAnswer.value != "B") {
-                if (inputAnswer.value != "C") {
-                    if (inputAnswer.value != "D") {
-                        alert('Please fill in an answer A, B, C, or D for correct answer.')
+        } else if (type == "multipleChoice") { 
+            if (inputAnswer.value != "A") {
+                if (inputAnswer.value != "B") {
+                    if (inputAnswer.value != "C") {
+                        if (inputAnswer.value != "D") {
+                            alert('Please fill in an answer A, B, C, or D for correct answer.')
             };
-        }}
+        }}}
         } else {
             addButton.disabled = true;
             switch (type) {
@@ -186,7 +210,7 @@ function submitQuiz() {
     fetch("/submit_quiz", {
         method: "POST",
         headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify(questions)
+        body: JSON.stringify(questions, employer, testName, email)
     }).then(res => {
         console.log("Quiz Submitted! Response:", res);
     });
@@ -229,6 +253,14 @@ var hideQuestionFill = () => {
     inputAnswerText.classList.add('hide');
     inputAnswer.classList.add('hide');
     addButton.classList.add('hide');
+}
+
+var unhideInputNames = () => {
+    nameEmployerContainer.classList.remove('hide')
+}
+
+var hideInputNames = () => {
+    nameEmployerContainer.classList.add('hide')
 }
 
 var unhideConfiguration = () => { 

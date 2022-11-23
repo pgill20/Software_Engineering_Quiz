@@ -6,84 +6,10 @@ import datetime
 import json
 # from db_connector import connect_to_database, execute_query
 from APIs import rankingsApi
+from sendemail import sendEmail
+from quizAPI import *
 
 app = Flask(__name__)
-
-# initialize Connector object
-connector = Connector()
-
-# function to return the database connection
-def getconn() -> pymysql.connections.Connection:
-    conn: pymysql.connections.Connection = connector.connect(
-        "test-capstone-project:us-west1:capstone-final",
-        "pymysql",
-        user="teamTriforce",
-        password="467Ranking",
-        db="capstone"
-    )
-    return conn
-
-def getQuiz():
-    pool = sqlalchemy.create_engine(
-        "mysql+pymysql://",
-        creator=getconn,
-    )
-
-    with pool.connect() as db_conn:
-        result = db_conn.execute("SELECT * FROM quizzes").fetchall()
-        for row in result:
-            print(row)
-        print("\n")    
-    connector.close()
-
-def insertQuiz(send_quiz):
-    pool = sqlalchemy.create_engine(
-        "mysql+pymysql://",
-        creator=getconn,
-    )
-
-    with pool.connect() as db_conn:
-        insert_stmt = sqlalchemy.text(
-        "INSERT INTO quizzes (username, Test, quizQuestions, Employer, time) values (:username, :Test, :quiz, :employer, :time)",
-        )
-        db_conn.execute(insert_stmt, username="DanTest", Test="Test Test", quiz=send_quiz, employer="Dan's House of Quizzes", time=datetime.datetime())
-    connector.close()
-
-def pullQuestions(arg_dict):
-    testid = arg_dict.get("testid")
-    pool = sqlalchemy.create_engine(
-        "mysql+pymysql://",
-        creator=getconn,
-    )
-
-    with pool.connect() as db_conn:
-        select_stmt = sqlalchemy.text(
-            "SELECT quizQuestions, Employer FROM quizzes WHERE testid=:id"
-        )
-        quiz = db_conn.execute(select_stmt, id=testid)
-
-        quiz = list(quiz)
-        return quiz
-
-def insertTestResults(fullName, email, score, testId, employer):
-    pool = sqlalchemy.create_engine(
-        "mysql+pymysql://",
-        creator=getconn,
-    )
-    base_query = """
-    INSERT INTO rankings (FullName , Email , Score , TestId , Employer) values ('{FullName}' , '{Email}' , '{Score}' , '{TestId}' , '{Employer}')
-    """
-    query = base_query.format(FullName=fullName, Email=email, Score=score, TestId=testId, Employer=employer)
-   
-    with pool.connect() as db_conn:
-        db_conn.execute(query)
-    connector.close()
-
-# create connection pool
-pool = sqlalchemy.create_engine(
-    "mysql+pymysql://",
-    creator=getconn,
-)
 
 # @app.route('/')
 # def index():
@@ -116,7 +42,16 @@ def create_quiz():
 @app.route('/submit_quiz', methods=["POST"])
 def submit_quiz():
     # This route is taken from create_quiz and allows created quizzes to be submitted to the database.
-    insertQuiz(request.data)
+    json_input = json.loads(request.data)
+    quiz = json_input[0]
+    employer = json_input[1]
+    testName = json_input[2]
+    email = json_input[3]
+    subjectInfo = employer + " has invited you to take a test: " + testName
+    timer = datetime.datetime.now()
+    insertQuiz(json_input, timer)
+    testID = getTestID(timer)
+    sendEmail(email, subjectInfo, testID)
     return redirect(url_for('index'), code=302)
 
 @app.route('/quiz')
@@ -124,12 +59,12 @@ def take_quiz():
     # This route is taken from an email link to a particular quiz
     if not request.args:
         return "You cannot access this page directly. Please access this page through an email link from your potential employer."
-    #group = pullQuestions(request.args)
-    #quiz = group[0][0]
-    #employer = group[0][1]
+    group = pullQuestions(request.args)
+    quiz = group[0][0]
+    employer = group[0][1]
     testid = request.args.get('testid')
-    quiz = [["multipleChoice", "question", "A", "B", "C", "D"]]
-    employer = "Dan"
+    #quiz = [["multipleChoice", "question", "A", "B", "C", "D"]]
+    #employer = "Dan"
     return render_template('take_quiz.html', q=quiz, t=testid, e=employer)
 
 @app.route('/submit_quiz_answers', methods=["POST"])
@@ -159,7 +94,6 @@ def table():
     rankingData = rankingsApi.getRankingsByTestID("ID 255")
     rankingData.sort(key = lambda x: x[index], reverse=True)
     return render_template("table.html", headings=headings, data=rankingData)
-
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
@@ -192,15 +126,4 @@ if __name__ == '__main__':
     # elif request.method == 'GET':
     # Under Construction
 
-@app.route('/rankings')
-def table():
-    headings = ["Full Name" , "Email" , "Test" , "Score" , "Test ID" , "Employer", "Applicant ID"]
-    index = 3
-    rankingData = rankingsApi.getRankingsByTestID("ID 255")
-    # rankingData = [
-    # ('Troy Peele', 'peelet@oregonstate.edu', 'Test 1', 10, 'ID 255', 'Google', 1),
-    # ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 11, 'ID 255', 'Google', 2),
-    # ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 1, 'ID 255', 'Google', 3), ('Troy Peele 2', 'peelet@oregonstate.edu', 'Test 1', 8, 'ID 255', 'Google', 4)
-    # ]
-    rankingData.sort(key = lambda x: x[index], reverse=True)
-    return render_template("table.html", headings=headings, data=rankingData)
+
