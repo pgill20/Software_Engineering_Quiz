@@ -43,6 +43,8 @@ var answerTwoText = document.getElementById('answerTwoText');
 var answerThreeText = document.getElementById('answerThreeText');
 var answerFourText = document.getElementById('answerFourText');
 var inputAnswerText = document.getElementById('correctAnswerText');
+var inputAnswerTextTF = document.getElementById('correctAnswerTrueFalse');
+var inputAnswerTF = document.getElementById('inputAnswerTrueFalse');
 var addButton = document.getElementById('addButton');
 
 // Screen 4, where you put in the name of the test and employer
@@ -100,7 +102,7 @@ multipleChoice.addEventListener('click', () => {
 
 shortAnswer.addEventListener('click', () => {
     hideChoose();
-    unhideShortAnswerOrTrueFalse();
+    unhideShortAnswer();
     switchToScreen();
     type = "shortAnswer"
 })
@@ -114,7 +116,7 @@ checkAll.addEventListener('click', () => {
 
 trueOrFalse.addEventListener('click', () => {
     hideChoose();
-    unhideShortAnswerOrTrueFalse();
+    unhideTrueFalse();
     switchToScreen();
     type = "trueOrFalse"
 })
@@ -130,28 +132,26 @@ if (addButton) {
         //TODO: If any fields are empty, don't continue
         if (1 == 2) {
             alert('Fields need to be filled before submission.');
-        } else if (type == "multipleChoice") { 
-            if (inputAnswer.value != "A") {
-                if (inputAnswer.value != "B") {
-                    if (inputAnswer.value != "C") {
-                        if (inputAnswer.value != "D") {
-                            alert('Please fill in an answer A, B, C, or D for correct answer.')
-            };
-        }}}
+            return
+        }
+        else if (type == "multipleChoice" && inputAnswer.value != "A" && inputAnswer.value != "B" && inputAnswer.value != "C" && inputAnswer.value != "D") {
+            alert('Please fill in an answer A, B, C, or D for correct answer.')
+        } else if (type == "trueOrFalse" && inputAnswerTF.value != "T" && inputAnswerTF.value != "F" && inputAnswerTF.value != "True" && inputAnswerTF.value != "False") {
+            alert('Please fill in either "True" (T) or "False" (F) for correct answer.')
         } else {
-            addButton.disabled = true;
+        addButton.disabled = true;
             switch (type) {
             case 'checkAll':
                 createMultipleChoiceOrCheckAll();
                 break;
             case 'shortAnswer':
-                createShortAnswerOrTrueFalse();
+                createShortAnswer();
                 break;
             case 'multipleChoice':
                 createMultipleChoiceOrCheckAll();
                 break;
             case 'trueOrFalse':
-                createShortAnswerOrTrueFalse();
+                createTrueFalse();
                 break;
             }
             addQuestion();
@@ -179,7 +179,14 @@ function createMultipleChoiceOrCheckAll() {
     questions[position][6] = inputAnswer.value
 }
 
-function createShortAnswerOrTrueFalse() {
+function createTrueFalse() {
+    questions[position] = []
+    questions[position][0] = type
+    questions[position][1] = inputQuestion.value;
+    questions[position][6] = inputAnswerTF.value;
+}
+
+function createShortAnswer() {
     questions[position] = []
     questions[position][0] = type
     questions[position][1] = inputQuestion.value;
@@ -253,6 +260,8 @@ var hideQuestionFill = () => {
     inputAnswerText.classList.add('hide');
     inputAnswer.classList.add('hide');
     addButton.classList.add('hide');
+    inputAnswerTextTF.classList.add('hide');
+    inputAnswerTF.classList.add('hide');
 }
 
 var unhideInputNames = () => {
@@ -287,7 +296,15 @@ var unhideMultipleChoiceOrCheckAll = () => {
     addButton.classList.remove('hide');
 }
 
-var unhideShortAnswerOrTrueFalse = () => { 
+var unhideTrueFalse = () => { 
+    questionText.classList.remove('hide');
+    inputQuestion.classList.remove('hide');
+    inputAnswerTextTF.classList.remove('hide');
+    inputAnswerTF.classList.remove('hide');
+    addButton.classList.remove('hide');
+}
+
+var unhideShortAnswer = () => { 
     questionText.classList.remove('hide');
     inputQuestion.classList.remove('hide');
     addButton.classList.remove('hide');
