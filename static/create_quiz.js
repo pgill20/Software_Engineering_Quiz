@@ -50,10 +50,12 @@ var addButton = document.getElementById('addButton');
 // Screen 4, where you put in the name of the test and employer
 var inputTestName = document.getElementById('inputTestName')
 var inputEmployer = document.getElementById('inputEmployer')
+var inputEmail = document.getElementById('inputEmail')
 var submitButton = document.getElementById('submitButton')
 var nameEmployerContainer = document.getElementById('nameEmployerContainer')
 var testName = ""
 var employer = ""
+var email = ""
 
 // Screen 1 Buttons
 if (createButton) {
@@ -78,13 +80,16 @@ if (nextButton) {
 
 if (submitButton) {
     submitButton.addEventListener('click', () => {
-        if (inputTestName.value == "Test Name") {
+        if (inputTestName.value == "") {
             alert('Please enter a test name.');
-        } else if (inputTestName.value == "Employer") {
+        } else if (inputTestName.value == "") {
             alert('Please enter an employer name.');
+        } else if (inputEmail.value == "") {
+            alert('Please enter a valid email address.');
         } else {
             testName = inputTestName.value
             employer = inputEmployer.value
+            email = inputEmail.value
             hideInputNames();
             showSuccess();
             submitQuiz();
@@ -134,9 +139,9 @@ if (addButton) {
             alert('Fields need to be filled before submission.');
             return
         }
-        else if (type == "multipleChoice" && inputAnswer.value != "A" && inputAnswer.value != "B" && inputAnswer.value != "C" && inputAnswer.value != "D") {
+        else if (type == "multipleChoice" && inputAnswer.value != "A" && inputAnswer.value != "B" && inputAnswer.value != "C" && inputAnswer.value != "D" && inputAnswer.value != "") {
             alert('Please fill in an answer A, B, C, or D for correct answer.')
-        } else if (type == "trueOrFalse" && inputAnswerTF.value != "T" && inputAnswerTF.value != "F" && inputAnswerTF.value != "True" && inputAnswerTF.value != "False") {
+        } else if (type == "trueOrFalse" && inputAnswerTF.value != "T" && inputAnswerTF.value != "F" && inputAnswerTF.value != "True" && inputAnswerTF.value != "False" && inputAnswerTF.value != "") {
             alert('Please fill in either "True" (T) or "False" (F) for correct answer.')
         } else {
         addButton.disabled = true;
@@ -217,11 +222,10 @@ function submitQuiz() {
     fetch("/submit_quiz", {
         method: "POST",
         headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify(questions, employer, testName, email)
+        body: JSON.stringify([questions, employer, testName, email])
     }).then(res => {
         console.log("Quiz Submitted! Response:", res);
     });
-    window.location.href = "/"
 }
 
 var clearForm = () => { form.classList.add('hide'); }

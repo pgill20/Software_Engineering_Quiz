@@ -5,6 +5,8 @@ import json
 from APIs import rankingsApi
 from sendemail import sendEmail
 from quizAPI import *
+import logging
+import time
 
 # For User Authentication
 from os import environ as env
@@ -84,21 +86,28 @@ def create_quiz():
 def submit_quiz():
     # This route is taken from create_quiz and allows created quizzes to be submitted to the database.
     json_input = json.loads(request.data)
-    quiz = json_input[0]
+
     employer = json_input[1]
     testName = json_input[2]
     email = json_input[3]
+
     subjectInfo = employer + " has invited you to take a test: " + testName
-    timer = datetime.datetime.now()
+    timer = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     insertQuiz(json_input, timer)
+    app.logger.warning("Quiz successfully uploaded to database.")
+    app.logger.warning("Getting Test ID using time...")
     testID = getTestID(timer)
-    sendEmail(email, subjectInfo, testID)
+    app.logger.warning("Test ID retrieved.")
+    app.logger.warning("Sending email to " + email + "...")
+    testLink = "http://127.0.0.1:8080/quiz?testid=" + str(testID)
+    sendEmail(email, subjectInfo, testLink)
+    app.logger.warning("Email successfully sent to candidate.")
     return redirect(url_for('index'), code=302)
 
 
 @app.route('/quiz')
 def take_quiz():
-    # This route is taken from an email link to a particular quiz
+    # This route is taken from an email link to a particular quiz 
     if not request.args:
         return "You cannot access this page directly. Please access this page through an email link from your potential employer."
     group = pullQuestions(request.args)

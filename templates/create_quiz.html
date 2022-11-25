@@ -61,7 +61,7 @@
     <div class="hide" id="nameEmployerContainer">
       <h4 id="namingText">Please fill out the fields below.</h4>
       <div class="row">
-        <form class="col s12">
+        <div class="col s12">
           <div class="row">
             <div class="input-field col s2 offset-s4">
               <input placeholder="Test Name" id="inputTestName" type="text" class="validate">
@@ -74,21 +74,24 @@
           </div>
           <h4 id="namingText">Please indicate an email to send this quiz to.</h4>
           <div class="row">
-            <form class="col s12">
+            <div class="col s12">
               <div class="row">
                 <div class="input-field col s4 offset-s4">
-                  <input placeholder="johndoe@email.com" id="inputEmail" type="email" class="validate">
+                  <input placeholder="johndoe@email.com" id="inputEmail" type="email">
                   <label class="active" for="inputEmail" id="inputEmailLabel">E-Mail</label>
                 </div>
               </div>
       <button class="waves-effect waves-light blue btn-small" id="submitButton">Submit Quiz</button>
     </div>
     </div>
-
-    <div class="row" id="successContainer">
-      <h3 class="hide" id="successText">Submitting Quiz...</h3>
+    </div>
     </div>
   </div>
+    
+  <div class="row" id="successContainer">
+      <h3 class="hide" id="successText">Quiz Submitted.</h3>
+    </div>
+  
 </body>
 
 </html>

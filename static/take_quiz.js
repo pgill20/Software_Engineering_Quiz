@@ -34,7 +34,7 @@ window.onload=function(){
         return questions
     }
 
-    questions = dummy_loadQuestions();
+    questions = loadQuestions();
 
     // Screen 3, where you type in the questions and answers you want
     var welcomeText = document.getElementById('welcomeText');

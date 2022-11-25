@@ -1,6 +1,8 @@
 import sqlalchemy
 import pymysql
 from google.cloud.sql.connector import Connector
+import json
+
 
 # initialize Connector object
 connector = Connector()
@@ -34,15 +36,17 @@ def insertQuiz(send_quiz, timer):
         "mysql+pymysql://",
         creator=getconn,
     )
-    quiz_q = send_quiz[0]
-    testName = send_quiz[1]
-    employer_e = send_quiz[2]
+    quiz_list = send_quiz[0]
+    testName = send_quiz[2]
+    employer_e = send_quiz[1]
+
+    quiz_q = json.dumps(quiz_list)
 
     with pool.connect() as db_conn:
         insert_stmt = sqlalchemy.text(
-        "INSERT INTO quizzes (username, Test, quizQuestions, Employer, time) values (:username, :Test, :quiz, :employer, :time)",
+        "INSERT INTO quizzes (username, Test, quizQuestions, Employer, time) values (:username, :Test, :quizQuestions, :Employer, :time)",
         )
-        db_conn.execute(insert_stmt, username="DanTest", Test=testName, quiz=quiz_q, employer=employer_e, time=timer)
+        db_conn.execute(insert_stmt, username="DanTest", Test=testName, quizQuestions=quiz_q, Employer=employer_e, time=timer)
     connector.close()
 
 def getTestID(timer):
@@ -51,14 +55,15 @@ def getTestID(timer):
         creator=getconn,
     )
 
-    with pool.connect() as db_conn:
-        select_stmt = sqlalchemy.text(
-            "SELECT testid FROM quizzes WHERE time=:time"
-        )
-        quiz = db_conn.execute(select_stmt, time=timer)
+    base_query = """
+    SELECT testID FROM quizzes WHERE time='{time}'
+    """
+    query = base_query.format(time=timer)
 
-        quiz = list(quiz)
-        return quiz
+    with pool.connect() as db_conn:
+        testid = db_conn.execute(query).fetchall()
+        return testid
+    connector.close()
 
 def pullQuestions(arg_dict):
     testid = arg_dict.get("testid")
