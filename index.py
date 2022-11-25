@@ -35,9 +35,9 @@ oauth.register(
 
 
 @app.route("/")
-def home():
+def index():
     return render_template(
-        "home.html",
+        "index.html",
         session=session.get("user"),
         pretty=json.dumps(session.get("user"), indent=4),
     )
@@ -66,7 +66,7 @@ def logout():
         + "/v2/logout?"
         + urlencode(
             {
-                "returnTo": url_for("home", _external=True),
+                "returnTo": url_for("index", _external=True),
                 "client_id": env.get("AUTH0_CLIENT_ID"),
             },
             quote_via=quote_plus,
