@@ -45,6 +45,8 @@ var answerFourText = document.getElementById('answerFourText');
 var inputAnswerText = document.getElementById('correctAnswerText');
 var inputAnswerTextTF = document.getElementById('correctAnswerTrueFalse');
 var inputAnswerTF = document.getElementById('inputAnswerTrueFalse');
+var inputAnswerTextTF = document.getElementById('correctAnswerTrueFalse');
+var inputAnswerTF = document.getElementById('inputAnswerTrueFalse');
 var addButton = document.getElementById('addButton');
 
 // Screen 4, where you put in the name of the test and employer
@@ -108,6 +110,7 @@ multipleChoice.addEventListener('click', () => {
 shortAnswer.addEventListener('click', () => {
     hideChoose();
     unhideShortAnswer();
+    unhideShortAnswer();
     switchToScreen();
     type = "shortAnswer"
 })
@@ -121,6 +124,7 @@ checkAll.addEventListener('click', () => {
 
 trueOrFalse.addEventListener('click', () => {
     hideChoose();
+    unhideTrueFalse();
     unhideTrueFalse();
     switchToScreen();
     type = "trueOrFalse"
@@ -139,11 +143,18 @@ if (addButton) {
             alert('Fields need to be filled before submission.');
             return
         }
+        else if (type == "multipleChoice" && inputAnswer.value != "A" && inputAnswer.value != "B" && inputAnswer.value != "C" && inputAnswer.value != "D") {
+            alert('Please fill in an answer A, B, C, or D for correct answer.')
+        } else if (type == "trueOrFalse" && inputAnswerTF.value != "T" && inputAnswerTF.value != "F" && inputAnswerTF.value != "True" && inputAnswerTF.value != "False") {
+            alert('Please fill in either "True" (T) or "False" (F) for correct answer.')
+            return
+        }
         else if (type == "multipleChoice" && inputAnswer.value != "A" && inputAnswer.value != "B" && inputAnswer.value != "C" && inputAnswer.value != "D" && inputAnswer.value != "") {
             alert('Please fill in an answer A, B, C, or D for correct answer.')
         } else if (type == "trueOrFalse" && inputAnswerTF.value != "T" && inputAnswerTF.value != "F" && inputAnswerTF.value != "True" && inputAnswerTF.value != "False" && inputAnswerTF.value != "") {
             alert('Please fill in either "True" (T) or "False" (F) for correct answer.')
         } else {
+        addButton.disabled = true;
         addButton.disabled = true;
             switch (type) {
             case 'checkAll':
@@ -151,11 +162,13 @@ if (addButton) {
                 break;
             case 'shortAnswer':
                 createShortAnswer();
+                createShortAnswer();
                 break;
             case 'multipleChoice':
                 createMultipleChoiceOrCheckAll();
                 break;
             case 'trueOrFalse':
+                createTrueFalse();
                 createTrueFalse();
                 break;
             }
@@ -266,6 +279,8 @@ var hideQuestionFill = () => {
     addButton.classList.add('hide');
     inputAnswerTextTF.classList.add('hide');
     inputAnswerTF.classList.add('hide');
+    inputAnswerTextTF.classList.add('hide');
+    inputAnswerTF.classList.add('hide');
 }
 
 var unhideInputNames = () => {
@@ -297,6 +312,14 @@ var unhideMultipleChoiceOrCheckAll = () => {
     answerFourText.classList.remove('hide');
     inputAnswerText.classList.remove('hide');
     inputAnswer.classList.remove('hide');
+    addButton.classList.remove('hide');
+}
+
+var unhideTrueFalse = () => { 
+    questionText.classList.remove('hide');
+    inputQuestion.classList.remove('hide');
+    inputAnswerTextTF.classList.remove('hide');
+    inputAnswerTF.classList.remove('hide');
     addButton.classList.remove('hide');
 }
 
