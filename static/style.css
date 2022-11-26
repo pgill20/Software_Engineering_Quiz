@@ -17,8 +17,14 @@
 body {
     font-family: "helvetica", sans-serif;
     text-align: center;
+    background-color: #202123;
+	color: #fff;
 }
 
 .navbar-fixed {
     text-size-adjust: 24;
+}
+
+input {
+    color: #fff;
 }
