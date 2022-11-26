@@ -38,6 +38,8 @@ oauth.register(
 
 @app.route("/")
 def index():
+    if session:
+        app.logger.info(session.get('user').get('userinfo').get('email'))
     return render_template(
         "index.html",
         session=session.get("user"),
@@ -90,11 +92,12 @@ def submit_quiz():
     employer = json_input[1]
     testName = json_input[2]
     email = json_input[3]
+    user = session.get('user').get('userinfo').get('nickname')
 
     subjectInfo = employer + " has invited you to take a test: " + testName
     timer = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     app.logger.info("Inserting test and retrieving testID...")
-    testID = insertQuiz(json_input, timer)
+    testID = insertQuiz(json_input, timer, user)
     app.logger.info("Quiz successfully uploaded to database. ID retrieved.")
     app.logger.info("Sending email to " + email + "...")
     testLink = "http://127.0.0.1:8080/quiz?testid=" + str(testID[0][0])
@@ -127,7 +130,7 @@ def submit_quiz_answers():
     email = data["email"]
     score = data["score"]
     testid = data["testid"]
-    employer = data["employer"]
+    employer = session.get('user').get('userinfo').get('email')
     testName = data["testName"]
     insertTestResults(fullName, email, score, testid, employer, testName)
     return redirect(url_for('index'), code=302)
