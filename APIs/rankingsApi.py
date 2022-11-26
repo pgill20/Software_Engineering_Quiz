@@ -23,9 +23,26 @@ def getRankingsByTestID(testId):
         creator=getconn,
     )
     base_query = """
-    SELECT * FROM rankings WHERE TestID='{id}'
+    SELECT FullName, Email, testName, Score FROM rankings WHERE TestID='{id}'
     """
     query = base_query.format(id=testId)
+
+    with pool.connect() as db_conn:
+        result = db_conn.execute(query).fetchall()
+        print(result)
+        return result
+    connector.close()
+
+def getRankingsByEmployerName(employer):
+
+    pool = sqlalchemy.create_engine(
+        "mysql+pymysql://",
+        creator=getconn,
+    )
+    base_query = """
+    SELECT FullName, Email, testName, Score FROM rankings WHERE Employer='{name}'
+    """
+    query = base_query.format(name=employer)
 
     with pool.connect() as db_conn:
         result = db_conn.execute(query).fetchall()
@@ -64,3 +81,4 @@ def createQuiz(username, test, TestName, quizQuestions, employer, time):
 # SAMPLE TEST RESULT INSERTION & VALIDATION
 # insertTestResults("Troy Peele 2", "peelet@oregonstate.edu", "Test 1", 11, "ID 255", "Google");
 # getRankingsByTestID('ID 255')
+# getRankingsByEmployerName("john@google.com")

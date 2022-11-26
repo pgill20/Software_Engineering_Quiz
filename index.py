@@ -138,12 +138,15 @@ def submit_quiz_answers():
 
 @app.route('/rankings')
 def table():
-    headings = ["Full Name", "Email", "Test", "Score",
-                "Test ID", "Employer", "Applicant ID"]
+    user = session.get('user')
+    employerName = user["userinfo"]["email"]
+    # employerName = "john@google.com"
+
+    headings = ["Full Name", "Email", "Test", "Score"]
     index = 3
 
     # NEED TO UTILIZE A TEST ID FOR GAINING INFORMATION
-    rankingData = rankingsApi.getRankingsByTestID("ID 255")
+    rankingData = rankingsApi.getRankingsByEmployerName(employerName)
     rankingData.sort(key=lambda x: x[index], reverse=True)
     return render_template("table.html", headings=headings, data=rankingData)
 
