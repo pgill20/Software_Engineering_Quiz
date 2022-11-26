@@ -42,11 +42,19 @@ def insertQuiz(send_quiz, timer):
 
     quiz_q = json.dumps(quiz_list)
 
+    base_query = """
+        SELECT testid FROM quizzes WHERE time='{time}'
+        """
+    query = base_query.format(time=timer)
+
     with pool.connect() as db_conn:
         insert_stmt = sqlalchemy.text(
         "INSERT INTO quizzes (username, Test, quizQuestions, Employer, time) values (:username, :Test, :quizQuestions, :Employer, :time)",
         )
         db_conn.execute(insert_stmt, username="DanTest", Test=testName, quizQuestions=quiz_q, Employer=employer_e, time=timer)
+        
+        testid = db_conn.execute(query).fetchall()
+        return testid
     connector.close()
 
 def getTestID(timer):
@@ -56,7 +64,7 @@ def getTestID(timer):
     )
 
     base_query = """
-    SELECT testID FROM quizzes WHERE time='{time}'
+    SELECT testid FROM quizzes WHERE time='{time}'
     """
     query = base_query.format(time=timer)
 
@@ -74,22 +82,22 @@ def pullQuestions(arg_dict):
 
     with pool.connect() as db_conn:
         select_stmt = sqlalchemy.text(
-            "SELECT quizQuestions, Employer FROM quizzes WHERE testid=:id"
+            "SELECT quizQuestions, Employer, Test FROM quizzes WHERE testid=:id"
         )
         quiz = db_conn.execute(select_stmt, id=testid)
 
         quiz = list(quiz)
         return quiz
 
-def insertTestResults(fullName, email, score, testId, employer):
+def insertTestResults(fullName, email, score, testId, employer, testName):
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
         creator=getconn,
     )
     base_query = """
-    INSERT INTO rankings (FullName , Email , Score , TestId , Employer) values ('{FullName}' , '{Email}' , '{Score}' , '{TestId}' , '{Employer}')
+    INSERT INTO rankings (FullName , Email , Score , TestId , Employer, testName) values ('{FullName}' , '{Email}' , '{Score}' , '{TestId}' , '{Employer}', '{name}')
     """
-    query = base_query.format(FullName=fullName, Email=email, Score=score, TestId=testId, Employer=employer)
+    query = base_query.format(FullName=fullName, Email=email, Score=score, TestId=testId, Employer=employer, name=testName)
    
     with pool.connect() as db_conn:
         db_conn.execute(query)

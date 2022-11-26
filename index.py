@@ -93,13 +93,11 @@ def submit_quiz():
 
     subjectInfo = employer + " has invited you to take a test: " + testName
     timer = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    insertQuiz(json_input, timer)
-    app.logger.warning("Quiz successfully uploaded to database.")
-    app.logger.warning("Getting Test ID using time...")
-    testID = getTestID(timer)
-    app.logger.warning("Test ID retrieved.")
+    app.logger.warning("Inserting test and retrieving testID...")
+    testID = insertQuiz(json_input, timer)
+    app.logger.warning("Quiz successfully uploaded to database. ID retrieved.")
     app.logger.warning("Sending email to " + email + "...")
-    testLink = "http://127.0.0.1:8080/quiz?testid=" + str(testID)
+    testLink = "http://127.0.0.1:8080/quiz?testid=" + str(testID[0][0])
     sendEmail(email, subjectInfo, testLink)
     app.logger.warning("Email successfully sent to candidate.")
     return redirect(url_for('index'), code=302)
@@ -113,10 +111,11 @@ def take_quiz():
     group = pullQuestions(request.args)
     quiz = group[0][0]
     employer = group[0][1]
+    testName = group[0][2]
     testid = request.args.get('testid')
     #quiz = [["multipleChoice", "question", "A", "B", "C", "D"]]
     #employer = "Dan"
-    return render_template('take_quiz.html', q=quiz, t=testid, e=employer)
+    return render_template('take_quiz.html', q=quiz, t=testid, e=employer, n=testName)
 
 
 @app.route('/submit_quiz_answers', methods=["POST"])
@@ -129,7 +128,8 @@ def submit_quiz_answers():
     score = data["score"]
     testid = data["testid"]
     employer = data["employer"]
-    insertTestResults(fullName, email, score, testid, employer)
+    testName = data["testName"]
+    insertTestResults(fullName, email, score, testid, employer, testName)
     return redirect(url_for('index'), code=302)
 
 
