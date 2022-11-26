@@ -15,11 +15,13 @@ window.onload=function(){
     var questions = [];
     var testid = "";
     var employer = "";
+    var testName = "";
 
     function loadQuestions() {
         questions_json = document.getElementById('questionsImport').innerHTML;
         testid = document.getElementById('testidImport').innerHTML;
         employer = document.getElementById('employerImport').innerHTML;
+        testName = document.getElementById('testNameImport').innerHTML;
         quotes = questions_json.replaceAll("'",'"');
         //toParse = quotes.slice(5,-1)
         questions = JSON.parse(quotes)
@@ -34,7 +36,7 @@ window.onload=function(){
         return questions
     }
 
-    questions = dummy_loadQuestions();
+    questions = loadQuestions();
 
     // Screen 3, where you type in the questions and answers you want
     var welcomeText = document.getElementById('welcomeText');
@@ -209,11 +211,10 @@ window.onload=function(){
         fetch("/submit_quiz_answers", {
             method: "POST",
             headers: {'Content-Type': 'application/json'}, 
-            body: JSON.stringify({"fullName": fullName, "email": email, "score": score, "testid": testid, "employer": employer})
+            body: JSON.stringify({"fullName": fullName, "email": email, "score": score, "testid": testid, "employer": employer, "testName": testName})
         }).then(res => {
             console.log("Quiz Submitted! Response:", res);
         });
-        window.location.href = "/"
     }
     
     var clearForm = () => { form.classList.add('hide'); }

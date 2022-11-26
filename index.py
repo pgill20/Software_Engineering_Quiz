@@ -5,6 +5,8 @@ import json
 from APIs import rankingsApi
 from sendemail import sendEmail
 from quizAPI import *
+import logging
+import time
 
 # For User Authentication
 from os import environ as env
@@ -36,6 +38,8 @@ oauth.register(
 
 @app.route("/")
 def index():
+    if session:
+        app.logger.info(session.get('user').get('userinfo').get('email'))
     return render_template(
         "index.html",
         session=session.get("user"),
@@ -84,30 +88,37 @@ def create_quiz():
 def submit_quiz():
     # This route is taken from create_quiz and allows created quizzes to be submitted to the database.
     json_input = json.loads(request.data)
-    quiz = json_input[0]
+
     employer = json_input[1]
     testName = json_input[2]
     email = json_input[3]
+    user = session.get('user').get('userinfo').get('nickname')
+
     subjectInfo = employer + " has invited you to take a test: " + testName
-    timer = datetime.datetime.now()
-    insertQuiz(json_input, timer)
-    testID = getTestID(timer)
-    sendEmail(email, subjectInfo, testID)
+    timer = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    app.logger.info("Inserting test and retrieving testID...")
+    testID = insertQuiz(json_input, timer, user)
+    app.logger.info("Quiz successfully uploaded to database. ID retrieved.")
+    app.logger.info("Sending email to " + email + "...")
+    testLink = "http://127.0.0.1:8080/quiz?testid=" + str(testID[0][0])
+    sendEmail(email, subjectInfo, testLink)
+    app.logger.info("Email successfully sent to candidate.")
     return redirect(url_for('index'), code=302)
 
 
 @app.route('/quiz')
 def take_quiz():
-    # This route is taken from an email link to a particular quiz
+    # This route is taken from an email link to a particular quiz 
     if not request.args:
         return "You cannot access this page directly. Please access this page through an email link from your potential employer."
     group = pullQuestions(request.args)
     quiz = group[0][0]
     employer = group[0][1]
+    testName = group[0][2]
     testid = request.args.get('testid')
     #quiz = [["multipleChoice", "question", "A", "B", "C", "D"]]
     #employer = "Dan"
-    return render_template('take_quiz.html', q=quiz, t=testid, e=employer)
+    return render_template('take_quiz.html', q=quiz, t=testid, e=employer, n=testName)
 
 
 @app.route('/submit_quiz_answers', methods=["POST"])
@@ -119,8 +130,9 @@ def submit_quiz_answers():
     email = data["email"]
     score = data["score"]
     testid = data["testid"]
-    employer = data["employer"]
-    insertTestResults(fullName, email, score, testid, employer)
+    employer = session.get('user').get('userinfo').get('email')
+    testName = data["testName"]
+    insertTestResults(fullName, email, score, testid, employer, testName)
     return redirect(url_for('index'), code=302)
 
 

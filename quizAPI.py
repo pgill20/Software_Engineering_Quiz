@@ -1,6 +1,8 @@
 import sqlalchemy
 import pymysql
 from google.cloud.sql.connector import Connector
+import json
+
 
 # initialize Connector object
 connector = Connector()
@@ -29,20 +31,30 @@ def getQuiz():
         print("\n")    
     connector.close()
 
-def insertQuiz(send_quiz, timer):
+def insertQuiz(send_quiz, timer, user):
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
         creator=getconn,
     )
-    quiz_q = send_quiz[0]
-    testName = send_quiz[1]
-    employer_e = send_quiz[2]
+    quiz_list = send_quiz[0]
+    testName = send_quiz[2]
+    employer_e = send_quiz[1]
+
+    quiz_q = json.dumps(quiz_list)
+
+    base_query = """
+        SELECT testid FROM quizzes WHERE time='{time}'
+        """
+    query = base_query.format(time=timer)
 
     with pool.connect() as db_conn:
         insert_stmt = sqlalchemy.text(
-        "INSERT INTO quizzes (username, Test, quizQuestions, Employer, time) values (:username, :Test, :quiz, :employer, :time)",
+        "INSERT INTO quizzes (username, Test, quizQuestions, Employer, time) values (:username, :Test, :quizQuestions, :Employer, :time)",
         )
-        db_conn.execute(insert_stmt, username="DanTest", Test=testName, quiz=quiz_q, employer=employer_e, time=timer)
+        db_conn.execute(insert_stmt, username=user, Test=testName, quizQuestions=quiz_q, Employer=employer_e, time=timer)
+        
+        testid = db_conn.execute(query).fetchall()
+        return testid
     connector.close()
 
 def getTestID(timer):
@@ -51,14 +63,15 @@ def getTestID(timer):
         creator=getconn,
     )
 
-    with pool.connect() as db_conn:
-        select_stmt = sqlalchemy.text(
-            "SELECT testid FROM quizzes WHERE time=:time"
-        )
-        quiz = db_conn.execute(select_stmt, time=timer)
+    base_query = """
+    SELECT testid FROM quizzes WHERE time='{time}'
+    """
+    query = base_query.format(time=timer)
 
-        quiz = list(quiz)
-        return quiz
+    with pool.connect() as db_conn:
+        testid = db_conn.execute(query).fetchall()
+        return testid
+    connector.close()
 
 def pullQuestions(arg_dict):
     testid = arg_dict.get("testid")
@@ -69,22 +82,22 @@ def pullQuestions(arg_dict):
 
     with pool.connect() as db_conn:
         select_stmt = sqlalchemy.text(
-            "SELECT quizQuestions, Employer FROM quizzes WHERE testid=:id"
+            "SELECT quizQuestions, Employer, Test FROM quizzes WHERE testid=:id"
         )
         quiz = db_conn.execute(select_stmt, id=testid)
 
         quiz = list(quiz)
         return quiz
 
-def insertTestResults(fullName, email, score, testId, employer):
+def insertTestResults(fullName, email, score, testId, employer, testName):
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
         creator=getconn,
     )
     base_query = """
-    INSERT INTO rankings (FullName , Email , Score , TestId , Employer) values ('{FullName}' , '{Email}' , '{Score}' , '{TestId}' , '{Employer}')
+    INSERT INTO rankings (FullName , Email , Score , TestId , Employer, testName) values ('{FullName}' , '{Email}' , '{Score}' , '{TestId}' , '{Employer}', '{name}')
     """
-    query = base_query.format(FullName=fullName, Email=email, Score=score, TestId=testId, Employer=employer)
+    query = base_query.format(FullName=fullName, Email=email, Score=score, TestId=testId, Employer=employer, name=testName)
    
     with pool.connect() as db_conn:
         db_conn.execute(query)
