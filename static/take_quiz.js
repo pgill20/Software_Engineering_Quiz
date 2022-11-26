@@ -215,7 +215,6 @@ window.onload=function(){
         }).then(res => {
             console.log("Quiz Submitted! Response:", res);
         });
-        window.location.href = "/"
     }
     
     var clearForm = () => { form.classList.add('hide'); }

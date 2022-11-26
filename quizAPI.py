@@ -31,7 +31,7 @@ def getQuiz():
         print("\n")    
     connector.close()
 
-def insertQuiz(send_quiz, timer):
+def insertQuiz(send_quiz, timer, user):
     pool = sqlalchemy.create_engine(
         "mysql+pymysql://",
         creator=getconn,
@@ -51,7 +51,7 @@ def insertQuiz(send_quiz, timer):
         insert_stmt = sqlalchemy.text(
         "INSERT INTO quizzes (username, Test, quizQuestions, Employer, time) values (:username, :Test, :quizQuestions, :Employer, :time)",
         )
-        db_conn.execute(insert_stmt, username="DanTest", Test=testName, quizQuestions=quiz_q, Employer=employer_e, time=timer)
+        db_conn.execute(insert_stmt, username=user, Test=testName, quizQuestions=quiz_q, Employer=employer_e, time=timer)
         
         testid = db_conn.execute(query).fetchall()
         return testid
