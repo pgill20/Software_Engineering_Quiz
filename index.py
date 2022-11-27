@@ -34,8 +34,6 @@ oauth.register(
 )
 
 # Controllers API
-
-
 @app.route("/")
 def index():
     if session:
