@@ -2,22 +2,25 @@
 <html>
 
 <head>
-    <title>Create Quiz - Software Quiz</title>
-    <script src="{{ url_for('static', filename='create_quiz.js') }}"></script>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='quiz_style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+  <title>Create Quiz - Software Quiz</title>
+  <script src="{{ url_for('static', filename='create_quiz.js') }}"></script>
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='quiz_style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 </head>
 
 <body>
+  {% if session %}
   <div class="navbar-fixed">
+    Welcome {{session.userinfo.nickname}}!
     <nav>
-    <div class="nav-wrapper blue lighten-2 class">
-      <div class="row">
-        <div class="col s12">
-          <a href="{{ url_for('index') }}" class="brand-logo center col s6">Quiz Creation</a>
+      <div class="nav-wrapper blue lighten-2 class">
+        <div class="row">
+          <div class="col s12">
+            <a href="{{ url_for('index') }}" class="brand-logo center col s6">Quiz Creation</a>
+          </div>
+          <a class=“col s1” href="/logout">Logout</a>
         </div>
       </div>
-    </div>
     </nav>
   </div>
 
@@ -81,17 +84,36 @@
                   <label class="active" for="inputEmail" id="inputEmailLabel">E-Mail</label>
                 </div>
               </div>
-      <button class="waves-effect waves-light blue btn-small" id="submitButton">Submit Quiz</button>
+              <button class="waves-effect waves-light blue btn-small" id="submitButton">Submit Quiz</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-    </div>
-    </div>
-  </div>
-    
-  <div class="row" id="successContainer">
+
+    <div class="row" id="successContainer">
       <h3 class="hide" id="successText">Quiz Submitted.</h3>
     </div>
-  
+
+    <div>
+      <div>
+        {% else %}
+        <div class="navbar-fixed">
+          <nav>
+            <div class="nav-wrapper blue lighten-2 class">
+              <div class="row">
+                <div class="col s11">
+                  Welcome Guest!
+                </div>
+                <a class=“col s1” href="/login">Login</a>
+              </div>
+            </div>
+          </nav>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
 </body>
 
 </html>
