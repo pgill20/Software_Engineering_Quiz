@@ -108,7 +108,7 @@ def submit_quiz():
 
 @app.route('/quiz')
 def take_quiz():
-    # This route is taken from an email link to a particular quiz 
+    # This route is taken from an email link to a particular quiz
     if not request.args:
         return "You cannot access this page directly. Please access this page through an email link from your potential employer."
     group = pullQuestions(request.args)
@@ -148,7 +148,7 @@ def table():
     # NEED TO UTILIZE A TEST ID FOR GAINING INFORMATION
     rankingData = rankingsApi.getRankingsByEmployerName(employerName)
     rankingData.sort(key=lambda x: x[index], reverse=True)
-    return render_template("table.html", headings=headings, data=rankingData)
+    return render_template("table.html", headings=headings, data=rankingData, session=session.get("user"),)
 
 
 if __name__ == '__main__':

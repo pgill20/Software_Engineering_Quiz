@@ -1,26 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/static/rankingStyles.css" />
-    <title>Document</title>
-  </head>
-  <body class="table-wrapper">
-    <table class="table">
-      <tr class="table__header">
-        {% for header in headings %}
-        <th class="table__head">{{ header }}</th>
-        {% endfor %}
-      </tr>
-      {% for row in data %}
-      <tr class="table__row">
-        {% for cell in row %}
-        <td class="table__cell">{{ cell }}</td>
-        {% endfor %}
-      </tr>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/static/rankingStyles.css" />
+  <title>Rankings</title>
+</head>
+
+{% if session %}
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper blue lighten-2 class">
+      <div class="row">
+        <div class="col s11">
+          Welcome {{session.userinfo.nickname}}!
+        </div>
+        <a class=“col s1” href="/logout">Logout</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<a class=“col s1” href="/">Return to Home</a>
+
+<div>
+  <div>
+    {% else %}
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper blue lighten-2 class">
+          <div class="row">
+            <div class="col s11">
+              Please Login
+            </div>
+            <a class=“col s1” href="/login">Login</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<body class="table-wrapper">
+  <table class="table">
+    <tr class="table__header">
+      {% for header in headings %}
+      <th class="table__head">{{ header }}</th>
       {% endfor %}
-    </table>
-  </body>
+    </tr>
+    {% for row in data %}
+    <tr class="table__row">
+      {% for cell in row %}
+      <td class="table__cell">{{ cell }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+
 </html>
