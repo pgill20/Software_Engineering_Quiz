@@ -16,9 +16,12 @@
 
 body {
     font-family: "helvetica", sans-serif;
-    text-align: center;
     background-color: #202123;
 	color: #fff;
+}
+
+#fullContainer {
+    text-align: center;
 }
 
 .navbar-fixed {
