@@ -11,19 +11,22 @@
 <body>
   {% if session %}
   <div class="navbar-fixed">
-    Welcome {{session.userinfo.nickname}}!
     <nav>
       <div class="nav-wrapper blue lighten-2 class">
         <div class="row">
           <div class="col s12">
-            <a href="{{ url_for('index') }}" class="brand-logo center col s6">Quiz Creation</a>
-          </div>
-          <a class=“col s1” href="/logout">Logout</a>
+            <div class="col s6">{{session.userinfo.nickname}}</div>
+            <a id="title" href="{{ url_for('index') }}" class="brand-logo center col s6">Quiz Creation</a>
+          <ul class="right">
+          <a class=“col s6" href="/logout">Logout</a>
+          </ul>
+        </div>
         </div>
       </div>
     </nav>
   </div>
 
+  <div id="fullContainer">
   <div id="configContainer" class="row">
     <h3 id="Question Counter"></h3>
     <h3>Choose an Option:</h3>
