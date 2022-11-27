@@ -39,11 +39,19 @@ oauth.register(
 def index():
     if session:
         app.logger.info(session.get('user').get('userinfo').get('email'))
-    return render_template(
-        "index.html",
-        session=session.get("user"),
-        pretty=json.dumps(session.get("user"), indent=4),
-    )
+
+        return render_template(
+            "index.html",
+            session=session.get("user"),
+            pretty=json.dumps(session.get("user"), indent=4),
+        )
+
+    else:
+        return render_template(
+            "index.html",
+            session=session.get("user"),
+            pretty=json.dumps(session.get("user"), indent=4),
+        )
 
 
 @app.route("/callback", methods=["GET", "POST"])
@@ -139,14 +147,13 @@ def submit_quiz_answers():
 def table():
     user = session.get('user')
     employerName = user["userinfo"]["email"]
-    # employerName = "john@google.com"
 
     headings = ["Full Name", "Email", "Test", "Score"]
     index = 3
 
-    # NEED TO UTILIZE A TEST ID FOR GAINING INFORMATION
     rankingData = rankingsApi.getRankingsByEmployerName(employerName)
     rankingData.sort(key=lambda x: x[index], reverse=True)
+    rankingData.sort(key=lambda x: x[index-1])
     return render_template("table.html", headings=headings, data=rankingData, session=session.get("user"))
 
 
