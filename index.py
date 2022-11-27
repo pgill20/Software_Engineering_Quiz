@@ -81,7 +81,7 @@ def logout():
 @app.route('/create_quiz')
 def create_quiz():
     # This route will allow employers to create their quiz.
-    return render_template('create_quiz.html')
+    return render_template('create_quiz.html', session=session.get("user"))
 
 
 @app.route('/submit_quiz', methods=["POST"])
@@ -148,7 +148,7 @@ def table():
     # NEED TO UTILIZE A TEST ID FOR GAINING INFORMATION
     rankingData = rankingsApi.getRankingsByEmployerName(employerName)
     rankingData.sort(key=lambda x: x[index], reverse=True)
-    return render_template("table.html", headings=headings, data=rankingData, session=session.get("user"),)
+    return render_template("table.html", headings=headings, data=rankingData, session=session.get("user"))
 
 
 if __name__ == '__main__':
