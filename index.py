@@ -100,7 +100,7 @@ def submit_quiz():
     testID = insertQuiz(json_input, timer, user)
     app.logger.info("Quiz successfully uploaded to database. ID retrieved.")
     app.logger.info("Sending email to " + email + "...")
-    testLink = "http://127.0.0.1:8080/quiz?testid=" + str(testID[0][0])
+    testLink = "https://softwarequizcapstone.herokuapp.com/quiz?testid=" + str(testID[0][0])
     sendEmail(email, subjectInfo, testLink)
     app.logger.info("Email successfully sent to candidate.")
     return redirect(url_for('index'), code=302)
