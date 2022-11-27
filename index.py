@@ -80,7 +80,7 @@ def logout():
 
 @app.route('/create_quiz')
 def create_quiz():
-    # This route will allow employers to create their quiz.
+    # This route will allow employers to create their quiz. 
     return render_template('create_quiz.html', session=session.get("user"))
 
 
