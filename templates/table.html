@@ -10,7 +10,7 @@
   <title>Rankings</title>
 </head>
 
-<body class="table-wrapper">
+<body>
   {% if session %}
   <div class="navbar-fixed">
     <nav>
@@ -18,7 +18,7 @@
         <div class="row">
           <div class="col s12">
             <h5 class="col s6">Welcome {{session.userinfo.nickname}} ! </h5>
-            <a id="title" href="{{ url_for('index') }}" class="brand-logo center col s6">Return to Homepage</a>
+            <h5 class="brand-logo center col s6">Rankings</h5>
             <ul class="right">
               <a href="/logout">
                 <h5>Logout</h5>
@@ -39,10 +39,10 @@
             <div class="row">
               <div class="col s12">
                 <h5 class="col s6">Welcome Guest !</h5>
-                <a id="title" href="{{ url_for('index') }}" class="brand-logo center col s6">Homepage</a>
+                <h5>Rankings</h5>
                 <ul class="right">
                   <a class=“col s6" href="/login">
-                    <h5>Login</h5>
+                    <h5 class="brand-logo center col s6">Rankings</h5>
                   </a>
                 </ul>
               </div>
@@ -54,7 +54,7 @@
     </div>
   </div>
 
-  <table class="table">
+  <table class="class=table-wrapper">
     <tr class="table__header">
       {% for header in headings %}
       <th class="table__head">{{ header }}</th>
@@ -68,6 +68,13 @@
     </tr>
     {% endfor %}
   </table>
+  </div>
+
+  <div>
+    <h3 class="center-align"><a id="title" href="{{ url_for('index') }}" class="brand-logo center col s6">Return to
+        homepage</a></h3>
+  </div>
+
 </body>
 
 </html>
