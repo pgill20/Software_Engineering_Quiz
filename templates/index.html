@@ -3,9 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <title>Homepage - Software Quiz</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 </head>
 
+<style>
+    .paddingStyle {
+        margin-top: 150px;
+    }
+</style>
 
 <body>
     {% if session %}
@@ -13,17 +19,39 @@
         <nav>
             <div class="nav-wrapper blue lighten-2 class">
                 <div class="row">
-                    <div class="col s11">
-                        Welcome {{session.userinfo.nickname}}!
+                    <div class="col s12">
+                        <h5 class="col s6">Welcome {{session.userinfo.nickname}} ! </h5>
+                        <a id="title" href="{{ url_for('index') }}" class="brand-logo center col s6">Homepage</a>
+                        <ul class="right">
+                            <a href="/logout">
+                                <h5>Logout</h5>
+                            </a>
+                        </ul>
                     </div>
-                    <a class=“col s1” href="/logout">Logout</a>
                 </div>
             </div>
         </nav>
     </div>
 
-    <a class=“col s1” href="/create_quiz">Create Quiz</a>
-    <a class=“col s1” href="/rankings">Rankings</a>
+    <div class="container paddingStyle">
+        <div class="row">
+            <div class="col s6">
+                <div class="container">
+                    <a href=" /create_quiz">
+                        <h3 class="center-align"><i class="large material-icons center-align">assignment</i>Create Quiz
+                        </h3>
+                    </a>
+                </div>
+            </div>
+            <div class="col s6">
+                <div class="container">
+                    <a href="/rankings">
+                        <h3 class="center-align"> <i class="large material-icons center-align">poll</i>Rankings</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div>
         <div>
@@ -32,10 +60,16 @@
                 <nav>
                     <div class="nav-wrapper blue lighten-2 class">
                         <div class="row">
-                            <div class="col s11">
-                                Welcome Guest!
+                            <div class="col s12">
+                                <h5 class="col s6">Welcome Guest !</h5>
+                                <a id="title" href="{{ url_for('index') }}"
+                                    class="brand-logo center col s6">Homepage</a>
+                                <ul class="right">
+                                    <a class=“col s6" href="/login">
+                                        <h5>Login</h5>
+                                    </a>
+                                </ul>
                             </div>
-                            <a class=“col s1” href="/login">Login</a>
                         </div>
                     </div>
                 </nav>
@@ -43,6 +77,7 @@
             {% endif %}
         </div>
     </div>
+
 </body>
 
 </html>
