@@ -6,10 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/static/rankingStyles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
   <title>Rankings</title>
 </head>
-
-
 
 <body class="table-wrapper">
   {% if session %}
@@ -17,16 +16,19 @@
     <nav>
       <div class="nav-wrapper blue lighten-2 class">
         <div class="row">
-          <div class="col s11">
-            Welcome {{session.userinfo.nickname}}!
+          <div class="col s12">
+            <h5 class="col s6">Welcome {{session.userinfo.nickname}} ! </h5>
+            <a id="title" href="{{ url_for('index') }}" class="brand-logo center col s6">Return to Homepage</a>
+            <ul class="right">
+              <a href="/logout">
+                <h5>Logout</h5>
+              </a>
+            </ul>
           </div>
-          <a class=“col s1” href="/logout">Logout</a>
         </div>
       </div>
     </nav>
   </div>
-
-  <a class=“col s1” href="/">Return to Home</a>
 
   <div>
     <div>
@@ -35,10 +37,15 @@
         <nav>
           <div class="nav-wrapper blue lighten-2 class">
             <div class="row">
-              <div class="col s11">
-                Please Login
+              <div class="col s12">
+                <h5 class="col s6">Welcome Guest !</h5>
+                <a id="title" href="{{ url_for('index') }}" class="brand-logo center col s6">Homepage</a>
+                <ul class="right">
+                  <a class=“col s6" href="/login">
+                    <h5>Login</h5>
+                  </a>
+                </ul>
               </div>
-              <a class=“col s1” href="/login">Login</a>
             </div>
           </div>
         </nav>
@@ -46,6 +53,7 @@
       {% endif %}
     </div>
   </div>
+
   <table class="table">
     <tr class="table__header">
       {% for header in headings %}
