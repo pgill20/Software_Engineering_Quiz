@@ -16,7 +16,7 @@
         <div class="row">
           <div class="col s12">
             <h5 class="col s6">Welcome {{session.userinfo.nickname}} !</h6>
-              <a id="title" href="{{ url_for('index') }}" class="brand-logo center col s6">Return to Homepage</a>
+              <h5 class="brand-logo center col s6">Create Quiz</h5>
               <ul class="right">
                 <a class=“col s6" href="/logout">
                   <h5>Logout</h5>
@@ -117,6 +117,11 @@
           </div>
           {% endif %}
         </div>
+      </div>
+
+      <div>
+        <h3 class="center-align"><a id="title" href="{{ url_for('index') }}" class="brand-logo center col s6">Return to
+            homepage</a></h3>
       </div>
 
 </body>

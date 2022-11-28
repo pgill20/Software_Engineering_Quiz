@@ -35,6 +35,12 @@
     background: #4fc3a1;
 }
 
+.table__head {
+
+    text-align: center;
+
+}
+
 .table__head:nth-child(even) {
     color: #ffffff;
     background: #324960;
