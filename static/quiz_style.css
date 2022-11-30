@@ -32,6 +32,10 @@ body {
     text-size-adjust: 24;
 }
 
+#timer {
+    padding-right: 30px;
+}
+
 input {
     color: #fff;
 }

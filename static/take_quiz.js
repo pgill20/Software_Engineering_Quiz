@@ -12,10 +12,12 @@
 // and it can't find the buttons to add click events to.
 window.onload=function(){
 
+    keepTime()
     var questions = [];
     var testid = "";
     var employer = "";
     var testName = "";
+    timer = document.getElementById('timer')
 
     function loadQuestions() {
         questions_json = document.getElementById('questionsImport').innerHTML;
@@ -216,6 +218,32 @@ window.onload=function(){
             console.log("Quiz Submitted! Response:", res);
         });
     }
+
+    function keepTime() {
+        counter = 300
+        var delta = Date.now()
+        seconds = Math.floor(delta / 1000);
+        setTimeout(end, 300000)
+        setInterval(function() {
+            new_time = Math.floor(Date.now() / 1000)
+            if (seconds < new_time) {
+                counter = 300 - (new_time-seconds);
+                timer.innerHTML = counter + " Seconds Remaining "
+            }
+        }, 1000)
+        function end() {
+            hideWelcome()
+            hideTimer()
+            hideCheckAll()
+            hideMultipleChoice()
+            hideTrueOrFalse()
+            hideShortAnswer()
+            hideQuestion()
+            showSuccess()
+            submitQuiz()
+        }
+
+    }
     
     var clearForm = () => { form.classList.add('hide'); }
     var clearQuiz = () => { 
@@ -232,6 +260,10 @@ window.onload=function(){
         inputEmailLabel.classList.add('hide');
         inputNameLabel.classList.add('hide');
     }   
+
+    var hideTimer = () => {
+        timer.classList.add('hide')
+    }
     
     var hideCheckAll = () => { 
         inputOneCA.classList.add('hide');
